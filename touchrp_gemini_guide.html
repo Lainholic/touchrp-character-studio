@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TouchRP — Gemini API Key Setup Guide</title>
+<style>
+  :root{
+    --bg:#080e1a;
+    --panel:#0e1526;
+    --line:#1c2740;
+    --cyan:#00f0ff;
+    --pink:#ff0077;
+    --text:#e6edf7;
+    --muted:#64748b;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    background:var(--bg);
+    color:var(--text);
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Pretendard,sans-serif;
+    line-height:1.6;
+    padding:30px 20px 80px;
+  }
+  .wrap{max-width:640px;margin:0 auto;}
+  
+  .top-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 24px;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+  .eyebrow{
+    font-size:13px;
+    color:var(--cyan);
+    letter-spacing:0.02em;
+    border:1px solid var(--cyan);
+    border-radius:999px;
+    padding:4px 12px;
+  }
+  .lang-switcher {
+    display: flex;
+    gap: 6px;
+    background: rgba(14, 21, 38, 0.8);
+    padding: 4px;
+    border-radius: 8px;
+    border: 1px solid var(--line);
+  }
+  .lang-btn {
+    background: transparent;
+    border: none;
+    color: var(--muted);
+    font-size: 12px;
+    font-weight: 600;
+    padding: 4px 8px;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .lang-btn:hover { color: #fff; }
+  .lang-btn.active {
+    background: var(--cyan);
+    color: var(--bg);
+    font-weight: 700;
+  }
+
+  h1{
+    font-size:26px;
+    line-height:1.35;
+    margin:0 0 10px;
+    font-weight:700;
+  }
+  .sub{
+    color:var(--muted);
+    font-size:14.5px;
+    margin:0 0 32px;
+    line-height:1.6;
+  }
+  .step{
+    position:relative;
+    padding:20px 20px 20px 60px;
+    background:var(--panel);
+    border:1px solid var(--line);
+    border-radius:12px;
+    margin-bottom:16px;
+  }
+  .step-num{
+    position:absolute;
+    left:18px;
+    top:20px;
+    width:28px;
+    height:28px;
+    border-radius:50%;
+    background:rgba(0,240,255,0.1);
+    border:1px solid var(--cyan);
+    color:var(--cyan);
+    font-size:14px;
+    font-weight:700;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+  }
+  .step h2{
+    font-size:16px;
+    margin:0 0 6px;
+    font-weight:600;
+  }
+  .step p{
+    margin:0;
+    font-size:13.5px;
+    color:#b7c2d6;
+    line-height:1.55;
+  }
+  .step a.btn{
+    display:inline-block;
+    margin-top:12px;
+    font-size:13px;
+    color:var(--bg);
+    background:var(--cyan);
+    padding:8px 16px;
+    border-radius:8px;
+    text-decoration:none;
+    font-weight:700;
+  }
+  .step .note{
+    margin-top:10px;
+    font-size:12px;
+    color:var(--muted);
+    border-left:2px solid var(--pink);
+    padding-left:10px;
+  }
+  .paste-box{
+    margin-top:12px;
+    background:#050810;
+    border:1px dashed var(--line);
+    border-radius:8px;
+    padding:10px 14px;
+  }
+  .paste-box input{
+    width:100%;
+    background:transparent;
+    border:none;
+    color:var(--cyan);
+    font-family:monospace;
+    font-size:13px;
+    outline:none;
+  }
+  .paste-box input::placeholder{color:#3a4763;}
+  footer{
+    margin-top:36px;
+    font-size:12px;
+    color:var(--muted);
+    text-align:center;
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="top-bar">
+    <span class="eyebrow" id="txtEyebrow">TouchRP · 사전 준비</span>
+    <div class="lang-switcher">
+      <button class="lang-btn active" data-lang="ko">🇰🇷 한국어</button>
+      <button class="lang-btn" data-lang="en">🇺🇸 English</button>
+      <button class="lang-btn" data-lang="ja">🇯🇵 日本語</button>
+      <button class="lang-btn" data-lang="zh">🇹🇼 繁體中文</button>
+    </div>
+  </div>
+
+  <h1 id="txtTitle">플레이 전, 키 하나만 발급받으면 끝나요</h1>
+  <p class="sub" id="txtSub">TouchRP는 중앙 서버 없이 당신의 기기에서 직접 AI와 대화해요. 무료 Gemini API 키가 하나 필요합니다 — 아래 4단계, 3분이면 끝납니다.</p>
+
+  <div class="step">
+    <div class="step-num">1</div>
+    <h2 id="txtStep1Title">Google AI Studio 접속</h2>
+    <p id="txtStep1Desc">평소 쓰시는 구글 계정으로 로그인하면 됩니다. 별도 가입이 필요 없습니다.</p>
+    <a class="btn" id="btnStep1" href="https://aistudio.google.com/app/apikey" target="_blank" rel="noopener">aistudio.google.com 열기</a>
+  </div>
+
+  <div class="step">
+    <div class="step-num">2</div>
+    <h2 id="txtStep2Title">약관 동의 (최초 방문 시)</h2>
+    <p id="txtStep2Desc">처음 접속하면 이용 약관 동의 창이 한 번 뜹니다. 동의하고 넘어가면 이후에는 다시 뜨지 않습니다.</p>
+  </div>
+
+  <div class="step">
+    <div class="step-num">3</div>
+    <h2 id="txtStep3Title">"Create API key" 클릭</h2>
+    <p id="txtStep3Desc">화면의 <b>Create API key</b> 버튼을 누르면 프로젝트 선택 창이 뜹니다. 기본으로 뜨는 프로젝트를 그대로 선택하고 키 생성을 완료하세요.</p>
+    <div class="note" id="txtStep3Note">생성된 키는 안전하게 암호화되어 로컬에만 저장됩니다.</div>
+  </div>
+
+  <div class="step">
+    <div class="step-num">4</div>
+    <h2 id="txtStep4Title">키 복사 → TouchRP에 붙여넣기</h2>
+    <p id="txtStep4Desc">생성된 키를 복사한 뒤, TouchRP 우측 상단 [AI 연동] 메뉴의 API 키 칸에 붙여넣고 저장하세요.</p>
+    <div class="paste-box">
+      <input type="text" id="inputPlaceholder" placeholder="AIza… 로 시작하는 키를 복사하여 TouchRP에 입력" disabled>
+    </div>
+  </div>
+
+  <footer id="txtFooter">🔒 발급된 API 키는 본인의 PC 로컬에만 저장되며 외부 서버로 전송되지 않습니다.</footer>
+</div>
+
+<script>
+const I18N_DATA = {
+  ko: {
+    eyebrow: "TouchRP · 사전 준비",
+    title: "플레이 전, 키 하나만 발급받으면 끝나요",
+    sub: "TouchRP는 중앙 서버 없이 당신의 기기에서 직접 AI와 대화해요. 무료 Gemini API 키가 하나 필요합니다 — 아래 4단계, 3분이면 끝납니다.",
+    s1Title: "Google AI Studio 접속",
+    s1Desc: "평소 쓰시는 구글 계정으로 로그인하면 됩니다. 별도 가입이 필요 없습니다.",
+    s1Btn: "aistudio.google.com 열기",
+    s2Title: "약관 동의 (최초 방문 시)",
+    s2Desc: "처음 접속하면 이용 약관 동의 창이 한 번 뜹니다. 동의하고 넘어가면 이후에는 다시 뜨지 않습니다.",
+    s3Title: "\"Create API key\" 클릭",
+    s3Desc: "화면의 <b>Create API key</b> 버튼을 누르면 프로젝트 선택 창이 뜹니다. 기본으로 뜨는 프로젝트를 그대로 선택하고 키 생성을 완료하세요.",
+    s3Note: "생성된 키는 안전하게 암호화되어 로컬에만 저장됩니다.",
+    s4Title: "키 복사 → TouchRP에 붙여넣기",
+    s4Desc: "생성된 키를 복사한 뒤, TouchRP 우측 상단 [AI 연동] 메뉴의 API 키 칸에 붙여넣고 저장하세요.",
+    placeholder: "AIza… 로 시작하는 키를 복사하여 TouchRP에 입력",
+    footer: "🔒 발급된 API 키는 본인의 PC 로컬에만 저장되며 외부 서버로 전송되지 않습니다."
+  },
+  en: {
+    eyebrow: "TouchRP · Setup Guide",
+    title: "Get Your Free Gemini API Key in 3 Minutes",
+    sub: "TouchRP connects directly from your device to the AI without intermediate servers. Follow these 4 quick steps to get your key.",
+    s1Title: "1. Open Google AI Studio",
+    s1Desc: "Sign in with your regular Google account. No separate registration is required.",
+    s1Btn: "Open aistudio.google.com",
+    s2Title: "2. Accept Terms (First Time Only)",
+    s2Desc: "If this is your first visit, simply accept the terms of service to proceed.",
+    s3Title: "3. Click \"Create API key\"",
+    s3Desc: "Click the <b>Create API key</b> button, select any default project offered, and complete generation.",
+    s3Note: "Your key is stored securely on your local machine only.",
+    s4Title: "4. Copy Key → Paste into TouchRP",
+    s4Desc: "Copy your generated API key, paste it into the [AI Settings] panel in TouchRP, and click Save.",
+    placeholder: "Paste your key starting with AIza… into TouchRP",
+    footer: "🔒 Your API key remains strictly on your local device and is never sent to third-party servers."
+  },
+  ja: {
+    eyebrow: "TouchRP · 事前準備ガイド",
+    title: "プレイ前に、無料APIキーを1つ取得するだけ",
+    sub: "TouchRPは外部サーバーを経由せず、お使いの端末から直接AIと対話します。以下の4ステップ（約3分）で設定完了です。",
+    s1Title: "1. Google AI Studio にアクセス",
+    s1Desc: "お持ちのGoogleアカウントでログインするだけです。特別な登録は不要です。",
+    s1Btn: "aistudio.google.com を開く",
+    s2Title: "2. 利用規約への同意（初回のみ）",
+    s2Desc: "初回アクセス時のみ規約同意画面が表示されます。同意して次へ進んでください。",
+    s3Title: "3. 「Create API key」をクリック",
+    s3Desc: "画面の <b>Create API key</b> ボタンを押し、表示されるデフォルトプロジェクトを選択してキーを生成します。",
+    s3Note: "生成されたキーはローカル環境にのみ安全に保存されます。",
+    s4Title: "4. キーをコピー ➔ TouchRPに貼り付け",
+    s4Desc: "生成されたキーをコピーし、TouchRP右上の【AI設定】メニューのAPIキー欄に貼り付けて保存してください。",
+    placeholder: "AIza… で始まるキーをコピーしてTouchRPに入力",
+    footer: "🔒 取得したAPIキーはお使いのPCにのみ保存され、外部サーバーへ送信されることはありません。"
+  },
+  zh: {
+    eyebrow: "TouchRP · 事前準備指南",
+    title: "開始前，只需取得一組免費 API Key",
+    sub: "TouchRP 無需中轉伺服器，直接在您的裝置上與 AI 進行對話。只需以下 4 個步驟，約 3 分鐘即可完成。",
+    s1Title: "1. 前往 Google AI Studio",
+    s1Desc: "使用您平時的 Google 帳號登入即可，無需額外註冊手續。",
+    s1Btn: "開啟 aistudio.google.com",
+    s2Title: "2. 同意服務條款（僅限初次訪問）",
+    s2Desc: "首次訪問時會彈出條款同意視窗，點擊同意後即可繼續。",
+    s3Title: "3. 點擊 \"Create API key\"",
+    s3Desc: "點擊畫面中的 <b>Create API key</b> 按鈕，選擇預設的專案即可完成金鑰生成。",
+    s3Note: "生成的金鑰僅會加密儲存在您的本機裝置上。",
+    s4Title: "4. 複製金鑰 ➔ 貼上至 TouchRP",
+    s4Desc: "複製生成的金鑰，貼上至 TouchRP 右上角【AI 設定】面板中的 API Key 欄位並點擊儲存。",
+    placeholder: "將以 AIza… 開頭的金鑰貼上至 TouchRP",
+    footer: "🔒 您的 API Key 僅儲存於本地端，絕不會傳送至任何第三方伺服器。"
+  }
+};
+
+function applyLang(lang) {
+  const t = I18N_DATA[lang] || I18N_DATA.ko;
+  document.getElementById('txtEyebrow').textContent = t.eyebrow;
+  document.getElementById('txtTitle').textContent = t.title;
+  document.getElementById('txtSub').innerHTML = t.sub;
+  document.getElementById('txtStep1Title').textContent = t.s1Title;
+  document.getElementById('txtStep1Desc').textContent = t.s1Desc;
+  document.getElementById('btnStep1').textContent = t.s1Btn;
+  document.getElementById('txtStep2Title').textContent = t.s2Title;
+  document.getElementById('txtStep2Desc').textContent = t.s2Desc;
+  document.getElementById('txtStep3Title').innerHTML = t.s3Title;
+  document.getElementById('txtStep3Desc').innerHTML = t.s3Desc;
+  document.getElementById('txtStep3Note').textContent = t.s3Note;
+  document.getElementById('txtStep4Title').textContent = t.s4Title;
+  document.getElementById('txtStep4Desc').textContent = t.s4Desc;
+  document.getElementById('inputPlaceholder').placeholder = t.placeholder;
+  document.getElementById('txtFooter').textContent = t.footer;
+
+  document.querySelectorAll('.lang-btn').forEach(b => {
+    b.classList.toggle('active', b.dataset.lang === lang);
+  });
+  document.documentElement.lang = lang;
+}
+
+document.querySelectorAll('.lang-btn').forEach(btn => {
+  btn.addEventListener('click', () => applyLang(btn.dataset.lang));
+});
+
+// 브라우저 언어 자동 감지
+const userLang = (navigator.language || 'ko').toLowerCase();
+if (userLang.startsWith('ja')) applyLang('ja');
+else if (userLang.startsWith('zh')) applyLang('zh');
+else if (userLang.startsWith('en')) applyLang('en');
+else applyLang('ko');
+</script>
+</body>
+</html>
