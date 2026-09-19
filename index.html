@@ -988,7 +988,9 @@
             statusBox.style.display = 'none';
             btn.disabled = false;
             btn.style.opacity = '1';
-            alert(I18N[currentLang]?.alert_ai_done || '✨ AI 정밀 누끼가 완료되었습니다!\n\n필요시 [🎯 스팟 지우개]로 미세 틈새를 다듬거나, 바로 [📥 고화질 투명 PNG 저장]을 누르시면 됩니다.');
+            setTimeout(() => {
+              alert(I18N[currentLang]?.alert_ai_done || '✨ AI 정밀 누끼가 완료되었습니다!\n\n필요시 [🎯 스팟 지우개]로 미세 틈새를 다듬거나, 바로 [📥 고화질 투명 PNG 저장]을 누르시면 됩니다.');
+            }, 50);
           };
         };
         reader.readAsDataURL(blob);
