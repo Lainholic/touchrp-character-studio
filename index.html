@@ -302,8 +302,16 @@
   <!-- 좌측 입력 사이드바 -->
   <div class="sidebar">
     <div class="header">
-      <h2>🎴 1. TouchRP 캐릭터 제작 스튜디오</h2>
-      <p>스탠딩 일러스트에 터치 부위를 지정하고 3단계 콤보 지문·대사를 작성하여 완성 캐릭터 팩(JSON)을 제작하는 메인 도구입니다.</p>
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
+        <h2 style="margin:0; font-size:1.1rem;">🎴 TouchRP 캐릭터 스튜디오</h2>
+        <button type="button" id="btnDownloadHtml" style="background:linear-gradient(135deg, #00f0ff, #0077ff); color:#000; border:none; border-radius:6px; padding:6px 12px; font-size:0.75rem; font-weight:bold; cursor:pointer; display:flex; align-items:center; gap:4px; box-shadow:0 0 10px rgba(0,240,255,0.4);" title="인터넷 없이 평생 소장할 수 있는 단일 HTML 파일로 저장합니다.">
+          💾 내 PC에 저장
+        </button>
+      </div>
+      <div style="background:rgba(0, 240, 255, 0.08); border:1px dashed var(--accent-cyan); border-radius:6px; padding:6px 8px; margin-bottom:6px; font-size:0.75rem; color:#e2e8f0; line-height:1.4;">
+        <span style="color:var(--accent-cyan); font-weight:bold;">⚡ 설치 불필요:</span> 지금 이 화면에서 이미지를 바로 선택하시거나 끌어다 놓으시면 즉시 작동합니다! (100% 로컬)
+      </div>
+      <p>스탠딩 일러스트에 터치 부위를 지정하고 3단계 콤보 지문을 작성하여 완성 캐릭터 팩을 제작합니다.</p>
     </div>
 
     <div class="content-area">
@@ -390,8 +398,16 @@
   <!-- 우측 캔버스 작업대 -->
   <div class="workspace" id="workspace">
     <div class="empty-prompt" id="emptyPrompt">
-      <h3>스탠딩 일러스트를 올려주세요</h3>
-      <p>파일을 여기에 <strong>드래그 앤 드롭</strong>하거나 좌측에서 선택하세요.<br>이미지 위에서 마우스를 드래그하면 터치 히트박스가 생성됩니다.</p>
+      <h3 style="font-size:1.5rem; margin-bottom:8px;">✨ 웹에서 바로 쓰는 무료 캐릭터 스튜디오</h3>
+      <p style="font-size:0.95rem; color:#cbd5e1; line-height:1.6; margin-bottom:14px;">
+        별도 설치나 다운로드 필요 없이, <strong>여기로 캐릭터 이미지를 드래그</strong>하시거나 좌측에서 선택하세요!<br>
+        100% 브라우저 로컬에서 안전하게 처리되며 원클릭 누끼와 터치 부위 설정이 가능합니다.
+      </p>
+      <div style="display:inline-flex; gap:10px; justify-content:center; flex-wrap:wrap;">
+        <span style="background:rgba(0,240,255,0.12); border:1px solid rgba(0,240,255,0.4); border-radius:20px; padding:6px 14px; font-size:0.8rem; color:#00f0ff; font-weight:bold;">🪄 원클릭 누끼</span>
+        <span style="background:rgba(255,119,168,0.12); border:1px solid rgba(255,119,168,0.4); border-radius:20px; padding:6px 14px; font-size:0.8rem; color:#ff77a8; font-weight:bold;">🎯 터치 부위 지정</span>
+        <span style="background:rgba(0,240,255,0.12); border:1px solid rgba(0,240,255,0.4); border-radius:20px; padding:6px 14px; font-size:0.8rem; color:#00f0ff; font-weight:bold;">📦 원클릭 팩 저장</span>
+      </div>
     </div>
 
     <div class="image-container" id="imgContainer" style="display:none;">
@@ -889,6 +905,21 @@
         }
       };
       reader.readAsText(file);
+    });
+
+    // 💾 이 도구 내 PC에 단일 HTML 파일로 저장
+    document.getElementById('btnDownloadHtml').addEventListener('click', () => {
+      const htmlContent = '<!DOCTYPE html>\n' + document.documentElement.outerHTML;
+      const blob = new Blob([htmlContent], { type: 'text/html;charset=utf-8' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'TouchRP_Character_Studio.html';
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+      alert('🎉 TouchRP 캐릭터 스튜디오가 다운로드되었습니다!\n\n이제 인터넷 연결 없이도 다운로드된 HTML 파일을 더블클릭하시면 언제든 사용하실 수 있습니다.');
     });
   </script>
 </body>
