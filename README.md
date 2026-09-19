@@ -5,6 +5,10 @@
 [![Live Demo](https://img.shields.io/badge/Live%20Demo-GitHub%20Pages-00f0ff?style=for-the-badge&logo=github)](https://lainholic.github.io/touchrp-character-studio)
 [![Official TouchRP](https://img.shields.io/badge/Official-TouchRP%20Studio-ff77a8?style=for-the-badge)](https://bit.ly/4rqAR32)
 
+<p align="center">
+  <img src="demo_tutorial.gif" alt="TouchRP Character Studio Demo" width="100%" style="border-radius: 10px; box-shadow: 0 4px 20px rgba(0,240,255,0.3);" />
+</p>
+
 ---
 
 ## 🌐 Languages / 언어 지원
