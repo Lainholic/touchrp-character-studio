@@ -1,0 +1,895 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <title>1. TouchRP 캐릭터 제작 스튜디오</title>
+  <style>
+    @import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css');
+    :root {
+      --bg: #080e1a;
+      --card-bg-rgb: 13, 19, 35;
+      --card-bg: rgba(13, 19, 35, 0.85);
+      --accent-cyan: #00f0ff;
+      --accent-magenta: #ff77a8;
+      --text-main: #f1f5f9;
+      --text-sub: #94a3b8;
+      --border-color: rgba(0, 240, 255, 0.2);
+      --glow-cyan: 0 0 10px rgba(0, 240, 255, 0.6);
+      --glow-magenta: 0 0 10px rgba(255, 119, 168, 0.6);
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background: var(--bg);
+      color: var(--text-main);
+      display: flex;
+      height: 100vh;
+      overflow: hidden;
+    }
+
+    /* 좌측 사이드바 */
+    .sidebar {
+      width: 400px;
+      min-width: 320px;
+      max-width: 440px;
+      background: var(--card-bg);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-right: 1px solid var(--border-color);
+      display: flex;
+      flex-direction: column;
+      height: 100vh;
+      box-shadow: 4px 0 25px rgba(0,0,0,0.6);
+      z-index: 10;
+      flex-shrink: 0;
+    }
+    .header {
+      padding: 14px 14px;
+      border-bottom: 1px solid var(--border-color);
+      background: rgba(8, 14, 26, 0.95);
+      flex-shrink: 0;
+    }
+    .header h2 {
+      font-size: 1.15rem;
+      color: var(--accent-cyan);
+      margin-bottom: 4px;
+      text-shadow: var(--glow-cyan);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .header p { font-size: 0.78rem; color: var(--text-sub); line-height: 1.35; }
+
+    .content-area {
+      flex: 1;
+      overflow-y: auto;
+      padding: 12px 14px;
+      scrollbar-width: thin;
+      scrollbar-color: var(--border-color) transparent;
+      min-height: 0; /* 중요: 플렉스 자식 스크롤 허용 */
+    }
+    .content-area::-webkit-scrollbar { width: 6px; }
+    .content-area::-webkit-scrollbar-track { background: transparent; }
+    .content-area::-webkit-scrollbar-thumb { background-color: rgba(0, 240, 255, 0.3); border-radius: 4px; }
+
+    .form-group { margin-bottom: 12px; }
+    label {
+      display: block;
+      font-size: 0.8rem;
+      font-weight: 600;
+      margin-bottom: 4px;
+      color: var(--accent-cyan);
+    }
+    input[type="text"], textarea, select, input[type="file"] {
+      width: 100%;
+      background: rgba(6, 10, 20, 0.7);
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      padding: 7px 10px;
+      color: var(--text-main);
+      font-size: 0.82rem;
+      transition: all 0.2s ease;
+    }
+    input[type="text"]::placeholder, textarea::placeholder {
+      color: #475569;
+    }
+    input[type="text"]:focus, textarea:focus, select:focus {
+      border-color: var(--accent-cyan);
+      outline: none;
+      box-shadow: 0 0 10px rgba(0, 240, 255, 0.3);
+      background: rgba(6, 10, 20, 0.9);
+    }
+
+    /* 퀵 칩 */
+    .quick-chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 5px;
+      margin-bottom: 10px;
+    }
+    .chip-btn {
+      background: rgba(0, 240, 255, 0.08);
+      border: 1px solid rgba(0, 240, 255, 0.25);
+      color: var(--accent-cyan);
+      padding: 3px 8px;
+      border-radius: 12px;
+      font-size: 0.72rem;
+      cursor: pointer;
+      font-weight: 500;
+      transition: all 0.2s;
+    }
+    .chip-btn:hover {
+      background: var(--accent-cyan);
+      color: #080e1a;
+      box-shadow: 0 0 8px var(--accent-cyan);
+    }
+
+    /* 부위 카드 */
+    .zone-box {
+      background: rgba(6, 10, 20, 0.6);
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      padding: 10px;
+      margin-bottom: 10px;
+      position: relative;
+      transition: all 0.2s ease;
+    }
+    .zone-box:hover {
+      border-color: rgba(0, 240, 255, 0.4);
+    }
+    .zone-box.active {
+      border-color: var(--accent-magenta);
+      box-shadow: 0 0 15px rgba(255, 119, 168, 0.3);
+      background: rgba(255, 119, 168, 0.05);
+    }
+    .zone-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 8px;
+    }
+    .zone-tag {
+      background: rgba(0, 240, 255, 0.15);
+      color: var(--accent-cyan);
+      font-size: 0.75rem;
+      padding: 2px 8px;
+      border-radius: 6px;
+      font-weight: bold;
+    }
+    .zone-header input[type="text"] {
+      padding: 5px 8px;
+      font-size: 0.82rem;
+    }
+    .btn-del-zone {
+      background: none;
+      border: none;
+      color: var(--accent-magenta);
+      cursor: pointer;
+      font-size: 1.1rem;
+      padding: 4px;
+      line-height: 1;
+      transition: transform 0.2s;
+    }
+    .btn-del-zone:hover {
+      transform: scale(1.2);
+    }
+
+    .combo-input { margin-bottom: 6px; }
+    .combo-input span {
+      font-size: 0.75rem;
+      color: var(--text-sub);
+      display: inline-block;
+      width: 55px;
+    }
+    .combo-input input[type="text"] {
+      display: inline-block;
+      width: calc(100% - 60px);
+      padding: 6px 10px;
+      font-size: 0.8rem;
+    }
+
+    /* 하단 툴바 */
+    .footer {
+      padding: 10px 14px;
+      border-top: 1px solid var(--border-color);
+      background: rgba(8, 14, 26, 0.98);
+      display: flex;
+      gap: 8px;
+      flex-shrink: 0;
+    }
+    .btn {
+      flex: 1;
+      padding: 9px;
+      font-weight: bold;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 0.82rem;
+      border: none;
+      transition: all 0.2s;
+    }
+    .btn-primary {
+      background: var(--accent-cyan);
+      color: #080e1a;
+      box-shadow: 0 0 12px rgba(0, 240, 255, 0.4);
+    }
+    .btn-primary:hover {
+      box-shadow: var(--glow-cyan);
+      transform: translateY(-1px);
+    }
+    .btn-secondary {
+      background: rgba(255, 255, 255, 0.08);
+      color: var(--text-main);
+      border: 1px solid var(--border-color);
+    }
+    .btn-secondary:hover {
+      background: rgba(255, 255, 255, 0.15);
+      border-color: var(--accent-cyan);
+    }
+
+    /* 우측 작업대 */
+    .workspace {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      background: #050811;
+      background-image: radial-gradient(circle at center, rgba(0, 240, 255, 0.08) 1px, transparent 1px);
+      background-size: 24px 24px;
+      user-select: none;
+      overflow: hidden;
+      padding: 10px;
+    }
+    .workspace.dragover {
+      background-color: rgba(0, 240, 255, 0.05);
+      border: 2px dashed var(--accent-cyan);
+    }
+    .image-container {
+      position: relative;
+      max-height: 96vh;
+      max-width: 100%;
+      box-shadow: 0 0 40px rgba(0,0,0,0.8), 0 0 20px rgba(0, 240, 255, 0.2);
+      border: 1px solid var(--accent-cyan);
+      border-radius: 10px;
+      overflow: hidden;
+      display: flex;
+      background: #000;
+      justify-content: center;
+      align-items: center;
+    }
+    #charImg {
+      display: block;
+      max-height: 94vh;
+      max-width: 60vw;
+      width: auto;
+      height: auto;
+      object-fit: contain;
+    }
+    #drawCanvas {
+      position: absolute;
+      top: 0; left: 0;
+      width: 100%;
+      height: 100%;
+      cursor: crosshair;
+    }
+
+    @media (max-width: 1200px), (max-height: 768px) {
+      .sidebar { width: 330px; min-width: 300px; }
+      .header h2 { font-size: 1.05rem; }
+      .header p { font-size: 0.72rem; }
+      #charImg { max-height: 90vh; max-width: 58vw; }
+    }
+    .empty-prompt {
+      color: var(--text-sub);
+      text-align: center;
+      pointer-events: none;
+    }
+    .empty-prompt h3 {
+      color: var(--accent-cyan);
+      margin-bottom: 10px;
+      font-size: 1.4rem;
+      text-shadow: var(--glow-cyan);
+    }
+    .empty-prompt p {
+      font-size: 0.9rem;
+      line-height: 1.6;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- 좌측 입력 사이드바 -->
+  <div class="sidebar">
+    <div class="header">
+      <h2>🎴 1. TouchRP 캐릭터 제작 스튜디오</h2>
+      <p>스탠딩 일러스트에 터치 부위를 지정하고 3단계 콤보 지문·대사를 작성하여 완성 캐릭터 팩(JSON)을 제작하는 메인 도구입니다.</p>
+    </div>
+
+    <div class="content-area">
+      <div class="form-group">
+        <label>1. 캐릭터 스탠딩 이미지</label>
+        <input type="file" id="imgUpload" accept="image/*">
+        
+        <!-- 원클릭 누끼(배경 투명화) 도구 박스 -->
+        <div id="bgRemoveBox" style="display:none; margin-top:10px; background:rgba(0, 240, 255, 0.06); border:1px solid rgba(0, 240, 255, 0.25); border-radius:8px; padding:10px;">
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;">
+            <span style="font-size:0.8rem; font-weight:bold; color:var(--accent-cyan);">🪄 원클릭 배경 누끼(투명화)</span>
+            <button type="button" id="btnResetImg" style="background:none; border:none; color:#94a3b8; font-size:0.75rem; cursor:pointer;">↩ 원본복구</button>
+          </div>
+          <div style="display:flex; gap:6px; margin-bottom:6px;">
+            <button type="button" id="btnRemoveWhite" class="chip-btn" style="flex:1; padding:6px 0; text-align:center;">⚪ 외곽 흰색 지우기</button>
+            <button type="button" id="btnRemoveBlack" class="chip-btn" style="flex:1; padding:6px 0; text-align:center;">⚫ 외곽 검은색 지우기</button>
+          </div>
+          <div style="display:flex; gap:6px; margin-bottom:8px;">
+            <button type="button" id="btnSpotEraser" class="chip-btn" style="flex:1; padding:6px 0; text-align:center; border-color:var(--accent-magenta); color:var(--accent-magenta);">🎯 스팟 지우개 (남은 부위 콕 찍기)</button>
+            <button type="button" id="btnDownloadPng" class="chip-btn" style="flex:1; padding:6px 0; text-align:center; border-color:var(--success); color:var(--success);">📥 투명 PNG 저장</button>
+          </div>
+          <div style="display:flex; align-items:center; gap:8px;">
+            <span style="font-size:0.75rem; color:var(--text-sub);">강도:</span>
+            <input type="range" id="toleranceRange" min="10" max="90" value="35" style="flex:1; height:4px; accent-color:var(--accent-cyan);">
+            <span id="toleranceVal" style="font-size:0.75rem; color:var(--accent-cyan); font-weight:bold; width:28px;">35</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- 공식 TouchRP 엔진 홍보 배너 -->
+      <div style="background: rgba(0, 240, 255, 0.06); border: 1px solid rgba(0, 240, 255, 0.25); border-radius: 8px; padding: 10px; margin-bottom: 12px; text-align: center;">
+        <div style="font-size: 0.74rem; color: #94a3b8; margin-bottom: 4px;">✨ 내가 만든 캐릭터를 터치하며 대화하고 싶다면?</div>
+        <a href="https://bit.ly/4rqAR32" target="_blank" rel="noopener noreferrer" style="display: inline-block; font-size: 0.82rem; font-weight: bold; color: var(--accent-cyan); text-decoration: none; text-shadow: var(--glow-cyan);">
+          🎮 [TouchRP Studio] 공식 엔진 보러가기 ➜
+        </a>
+      </div>
+
+      <div class="form-group">
+        <label>캐릭터 식별 ID / 이름 / 성별</label>
+        <div style="display:flex; gap:6px;">
+          <input type="text" id="charId" placeholder="char_yuki" style="width:35%;">
+          <input type="text" id="charName" placeholder="유키" style="width:40%;">
+          <select id="charGender" style="width:25%; padding:9px 6px; font-size:0.82rem;">
+            <option value="female" selected>여성</option>
+            <option value="male">남성</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label>성격 / 시나리오 요약</label>
+        <textarea id="charScenario" rows="2" placeholder="새벽 골목길에서 비를 피하는 과묵한 성격"></textarea>
+      </div>
+
+      <hr style="border:none; border-top:1px solid rgba(0, 240, 255, 0.15); margin: 16px 0;">
+
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
+        <label style="margin:0;">2. 설정된 터치 히트박스 목록</label>
+        <span id="zoneCount" style="font-size:0.75rem; color:var(--accent-cyan); font-weight:bold;">0개 부위</span>
+      </div>
+
+      <div class="quick-chips" id="quickChips">
+        <button class="chip-btn" data-label="머리" data-key="head">머리</button>
+        <button class="chip-btn" data-label="가슴" data-key="chest">가슴</button>
+        <button class="chip-btn" data-label="허벅지" data-key="thigh">허벅지</button>
+        <button class="chip-btn" data-label="손/팔" data-key="hand">손/팔</button>
+        <button class="chip-btn" data-label="입술" data-key="lips">입술</button>
+        <button class="chip-btn" data-label="엉덩이" data-key="hip">엉덩이</button>
+        <button class="chip-btn" data-label="귀/뿔" data-key="ear">귀/뿔</button>
+      </div>
+
+      <div id="zoneListContainer">
+        <!-- 동적으로 추가되는 부위 카드 -->
+      </div>
+    </div>
+
+    <div class="footer">
+      <button class="btn btn-secondary" id="btnImportJson">📂 기존 JSON</button>
+      <button class="btn btn-primary" id="btnExportJson">💾 완성 팩 저장</button>
+      <input type="file" id="jsonUpload" accept=".json" style="display:none;">
+    </div>
+  </div>
+
+  <!-- 우측 캔버스 작업대 -->
+  <div class="workspace" id="workspace">
+    <div class="empty-prompt" id="emptyPrompt">
+      <h3>스탠딩 일러스트를 올려주세요</h3>
+      <p>파일을 여기에 <strong>드래그 앤 드롭</strong>하거나 좌측에서 선택하세요.<br>이미지 위에서 마우스를 드래그하면 터치 히트박스가 생성됩니다.</p>
+    </div>
+
+    <div class="image-container" id="imgContainer" style="display:none;">
+      <img id="charImg" src="" alt="캐릭터">
+      <canvas id="drawCanvas"></canvas>
+    </div>
+  </div>
+
+  <script>
+    let zones = [];
+    let activeZoneIdx = -1;
+    let isDrawing = false;
+    let startX = 0, startY = 0;
+    let currentDragRect = null;
+    let base64Image = '';
+
+    const imgUpload = document.getElementById('imgUpload');
+    const charImg = document.getElementById('charImg');
+    const imgContainer = document.getElementById('imgContainer');
+    const drawCanvas = document.getElementById('drawCanvas');
+    const ctx = drawCanvas.getContext('2d');
+    const emptyPrompt = document.getElementById('emptyPrompt');
+    const zoneListContainer = document.getElementById('zoneListContainer');
+    const zoneCount = document.getElementById('zoneCount');
+    const workspace = document.getElementById('workspace');
+
+    const bgRemoveBox = document.getElementById('bgRemoveBox');
+    const btnRemoveWhite = document.getElementById('btnRemoveWhite');
+    const btnRemoveBlack = document.getElementById('btnRemoveBlack');
+    const btnResetImg = document.getElementById('btnResetImg');
+    const toleranceRange = document.getElementById('toleranceRange');
+    const toleranceVal = document.getElementById('toleranceVal');
+    let originalBase64 = '';
+
+    toleranceRange.addEventListener('input', (e) => {
+      toleranceVal.textContent = e.target.value;
+    });
+
+    function removeBackground(targetColor) {
+      if (!originalBase64) return;
+      const img = new Image();
+      img.src = originalBase64;
+      img.onload = () => {
+        const c = document.createElement('canvas');
+        const w = img.naturalWidth;
+        const h = img.naturalHeight;
+        c.width = w;
+        c.height = h;
+        const cctx = c.getContext('2d');
+        cctx.drawImage(img, 0, 0);
+
+        const imgData = cctx.getImageData(0, 0, w, h);
+        const data = imgData.data;
+        const tolerance = parseInt(toleranceRange.value, 10);
+
+        // 색상 일치 여부 판정 함수
+        function isColorMatch(idx) {
+          const r = data[idx], g = data[idx+1], b = data[idx+2];
+          if (targetColor === 'white') {
+            const threshold = 255 - (tolerance * 2.0);
+            if (r >= threshold && g >= threshold && b >= threshold) {
+              const diff = Math.max(Math.abs(r - g), Math.abs(g - b), Math.abs(r - b));
+              return diff < tolerance * 1.2;
+            }
+          } else if (targetColor === 'black') {
+            const threshold = tolerance * 2.0;
+            if (r <= threshold && g <= threshold && b <= threshold) {
+              const diff = Math.max(Math.abs(r - g), Math.abs(g - b), Math.abs(r - b));
+              return diff < tolerance * 1.2;
+            }
+          }
+          return false;
+        }
+
+        // ★ 플러드 필 (Flood-Fill): 4방향 가장자리 외곽 모서리에서만 탐색 시작 (캐릭터 내부 흰옷/눈동자 100% 보존)
+        const visited = new Uint8Array(w * h);
+        const queue = [];
+
+        // 상단/하단 테두리
+        for (let x = 0; x < w; x++) {
+          queue.push((0 * w + x));
+          queue.push(((h - 1) * w + x));
+        }
+        // 좌측/우측 테두리
+        for (let y = 0; y < h; y++) {
+          queue.push((y * w + 0));
+          queue.push((y * w + (w - 1)));
+        }
+
+        let qHead = 0;
+        while (qHead < queue.length) {
+          const pos = queue[qHead++];
+          if (visited[pos]) continue;
+          visited[pos] = 1;
+
+          const pIdx = pos * 4;
+          if (isColorMatch(pIdx)) {
+            data[pIdx + 3] = 0; // 바깥쪽 연결 배경만 투명화!
+
+            const px = pos % w;
+            const py = Math.floor(pos / w);
+
+            if (px > 0 && !visited[pos - 1]) queue.push(pos - 1);
+            if (px < w - 1 && !visited[pos + 1]) queue.push(pos + 1);
+            if (py > 0 && !visited[pos - w]) queue.push(pos - w);
+            if (py < h - 1 && !visited[pos + w]) queue.push(pos + w);
+          }
+        }
+
+        cctx.putImageData(imgData, 0, 0);
+        base64Image = c.toDataURL('image/png');
+        charImg.src = base64Image;
+      };
+    }
+
+    const btnSpotEraser = document.getElementById('btnSpotEraser');
+    let isSpotEraserMode = false;
+
+    btnSpotEraser.addEventListener('click', () => {
+      isSpotEraserMode = !isSpotEraserMode;
+      if (isSpotEraserMode) {
+        btnSpotEraser.style.background = 'var(--accent-magenta)';
+        btnSpotEraser.style.color = '#080e1a';
+        btnSpotEraser.style.boxShadow = '0 0 10px var(--accent-magenta)';
+        drawCanvas.style.cursor = 'crosshair';
+      } else {
+        btnSpotEraser.style.background = '';
+        btnSpotEraser.style.color = 'var(--accent-magenta)';
+        btnSpotEraser.style.boxShadow = '';
+        drawCanvas.style.cursor = 'default';
+      }
+    });
+
+    function spotEraseAt(clientX, clientY) {
+      if (!base64Image) return;
+      const img = new Image();
+      img.src = base64Image;
+      img.onload = () => {
+        const c = document.createElement('canvas');
+        const w = img.naturalWidth;
+        const h = img.naturalHeight;
+        c.width = w;
+        c.height = h;
+        const cctx = c.getContext('2d');
+        cctx.drawImage(img, 0, 0);
+
+        const imgData = cctx.getImageData(0, 0, w, h);
+        const data = imgData.data;
+        const tolerance = parseInt(toleranceRange.value, 10);
+
+        // 클릭된 캔버스 좌표를 이미지 네이티브 좌표로 환산
+        const imgRect = charImg.getBoundingClientRect();
+        const clickX = Math.floor(((clientX - imgRect.left) / imgRect.width) * w);
+        const clickY = Math.floor(((clientY - imgRect.top) / imgRect.height) * h);
+
+        if (clickX < 0 || clickX >= w || clickY < 0 || clickY >= h) return;
+
+        const startIdx = (clickY * w + clickX) * 4;
+        const targetR = data[startIdx], targetG = data[startIdx+1], targetB = data[startIdx+2], targetA = data[startIdx+3];
+
+        if (targetA === 0) return; // 이미 투명하면 스킵
+
+        function isMatch(idx) {
+          const r = data[idx], g = data[idx+1], b = data[idx+2], a = data[idx+3];
+          if (a === 0) return false;
+          const diffR = Math.abs(r - targetR);
+          const diffG = Math.abs(g - targetG);
+          const diffB = Math.abs(b - targetB);
+          return (diffR + diffG + diffB) / 3 < (tolerance * 1.5);
+        }
+
+        // 클릭 지점으로부터 연결된 같은 색상 영역만 Flood-Fill 투명화
+        const visited = new Uint8Array(w * h);
+        const queue = [(clickY * w + clickX)];
+        let qHead = 0;
+
+        while (qHead < queue.length) {
+          const pos = queue[qHead++];
+          if (visited[pos]) continue;
+          visited[pos] = 1;
+
+          const pIdx = pos * 4;
+          if (isMatch(pIdx)) {
+            data[pIdx + 3] = 0; // 해당 영역 투명화!
+
+            const px = pos % w;
+            const py = Math.floor(pos / w);
+
+            if (px > 0 && !visited[pos - 1]) queue.push(pos - 1);
+            if (px < w - 1 && !visited[pos + 1]) queue.push(pos + 1);
+            if (py > 0 && !visited[pos - w]) queue.push(pos - w);
+            if (py < h - 1 && !visited[pos + w]) queue.push(pos + w);
+          }
+        }
+
+        cctx.putImageData(imgData, 0, 0);
+        base64Image = c.toDataURL('image/png');
+        charImg.src = base64Image;
+      };
+    }
+
+    const btnDownloadPng = document.getElementById('btnDownloadPng');
+    btnDownloadPng.addEventListener('click', () => {
+      if (!base64Image) {
+        alert('먼저 이미지를 업로드해 주세요!');
+        return;
+      }
+      const charId = document.getElementById('charId').value.trim() || 'character';
+      const a = document.createElement('a');
+      a.href = base64Image;
+      a.download = `${charId}_transparent.png`;
+      a.click();
+    });
+
+    btnRemoveWhite.addEventListener('click', () => removeBackground('white'));
+    btnRemoveBlack.addEventListener('click', () => removeBackground('black'));
+    btnResetImg.addEventListener('click', () => {
+      if (!originalBase64) return;
+      base64Image = originalBase64;
+      charImg.src = base64Image;
+    });
+
+    function loadImageFile(file) {
+      if (!file || !file.type.startsWith('image/')) return;
+      const reader = new FileReader();
+      reader.onload = (ev) => {
+        originalBase64 = ev.target.result;
+        base64Image = originalBase64;
+        charImg.src = base64Image;
+        charImg.onload = () => {
+          imgContainer.style.display = 'flex';
+          emptyPrompt.style.display = 'none';
+          if (bgRemoveBox) bgRemoveBox.style.display = 'block';
+          syncCanvasSize();
+          redrawCanvas();
+        };
+      };
+      reader.readAsDataURL(file);
+    }
+
+    imgUpload.addEventListener('change', (e) => {
+      loadImageFile(e.target.files[0]);
+    });
+
+    // 드래그 앤 드롭 지원
+    workspace.addEventListener('dragover', (e) => {
+      e.preventDefault();
+      workspace.classList.add('dragover');
+    });
+    workspace.addEventListener('dragleave', () => {
+      workspace.classList.remove('dragover');
+    });
+    workspace.addEventListener('drop', (e) => {
+      e.preventDefault();
+      workspace.classList.remove('dragover');
+      if (e.dataTransfer.files && e.dataTransfer.files[0]) {
+        loadImageFile(e.dataTransfer.files[0]);
+      }
+    });
+
+    function syncCanvasSize() {
+      drawCanvas.width = charImg.clientWidth;
+      drawCanvas.height = charImg.clientHeight;
+    }
+    window.addEventListener('resize', () => {
+      if (charImg.complete && charImg.clientWidth > 0) {
+        syncCanvasSize();
+        redrawCanvas();
+      }
+    });
+
+    // 캔버스 인터랙션 (스팟 지우개 또는 히트박스 드래그)
+    drawCanvas.addEventListener('mousedown', (e) => {
+      if (isSpotEraserMode) {
+        spotEraseAt(e.clientX, e.clientY);
+        return;
+      }
+      const rect = drawCanvas.getBoundingClientRect();
+      startX = e.clientX - rect.left;
+      startY = e.clientY - rect.top;
+      isDrawing = true;
+    });
+
+    drawCanvas.addEventListener('mousemove', (e) => {
+      if (!isDrawing) return;
+      const rect = drawCanvas.getBoundingClientRect();
+      const curX = e.clientX - rect.left;
+      const curY = e.clientY - rect.top;
+
+      currentDragRect = {
+        x: Math.min(startX, curX),
+        y: Math.min(startY, curY),
+        w: Math.abs(curX - startX),
+        h: Math.abs(curY - startY)
+      };
+
+      redrawCanvas();
+      ctx.strokeStyle = '#00f0ff';
+      ctx.lineWidth = 2;
+      ctx.setLineDash([4, 4]);
+      ctx.strokeRect(currentDragRect.x, currentDragRect.y, currentDragRect.w, currentDragRect.h);
+    });
+
+    drawCanvas.addEventListener('mouseup', () => {
+      if (!isDrawing || !currentDragRect) return;
+      isDrawing = false;
+
+      if (currentDragRect.w < 15 || currentDragRect.h < 15) {
+        currentDragRect = null;
+        redrawCanvas();
+        return;
+      }
+
+      const pctLeft = (currentDragRect.x / drawCanvas.width) * 100;
+      const pctTop = (currentDragRect.y / drawCanvas.height) * 100;
+      const pctWidth = (currentDragRect.w / drawCanvas.width) * 100;
+      const pctHeight = (currentDragRect.h / drawCanvas.height) * 100;
+
+      const newZone = {
+        key: 'part_' + Date.now().toString().slice(-4),
+        label: '신규 부위',
+        rect: { left: pctLeft, top: pctTop, width: pctWidth, height: pctHeight },
+        combos: [
+          '조심스럽게 손을 댐',
+          '부드럽게 쓸어내림',
+          '진득하게 어루만짐'
+        ]
+      };
+
+      zones.push(newZone);
+      activeZoneIdx = zones.length - 1;
+      currentDragRect = null;
+
+      renderZoneCards();
+      redrawCanvas();
+    });
+
+    function redrawCanvas() {
+      ctx.clearRect(0, 0, drawCanvas.width, drawCanvas.height);
+      ctx.setLineDash([]);
+
+      zones.forEach((z, idx) => {
+        const x = (z.rect.left / 100) * drawCanvas.width;
+        const y = (z.rect.top / 100) * drawCanvas.height;
+        const w = (z.rect.width / 100) * drawCanvas.width;
+        const h = (z.rect.height / 100) * drawCanvas.height;
+
+        const isCurrent = (idx === activeZoneIdx);
+        ctx.fillStyle = isCurrent ? 'rgba(255, 119, 168, 0.35)' : 'rgba(0, 240, 255, 0.18)';
+        ctx.strokeStyle = isCurrent ? '#ff77a8' : '#00f0ff';
+        ctx.lineWidth = isCurrent ? 2.5 : 1.5;
+
+        ctx.fillRect(x, y, w, h);
+        ctx.strokeRect(x, y, w, h);
+
+        ctx.fillStyle = '#ffffff';
+        ctx.font = 'bold 12px sans-serif';
+        ctx.fillText(z.label || z.key, x + 6, y + 18);
+      });
+    }
+
+    function renderZoneCards() {
+      zoneListContainer.innerHTML = '';
+      zoneCount.textContent = `${zones.length}개 부위`;
+
+      zones.forEach((z, idx) => {
+        const card = document.createElement('div');
+        card.className = `zone-box ${idx === activeZoneIdx ? 'active' : ''}`;
+        card.innerHTML = `
+          <div class="zone-header">
+            <span class="zone-tag">#${idx + 1}</span>
+            <input type="text" style="width:110px; font-weight:bold;" value="${z.label}" placeholder="표시명">
+            <input type="text" style="width:90px; font-size:11px; color:#94a3b8;" value="${z.key}" placeholder="key">
+            <button class="btn-del-zone" title="삭제">✕</button>
+          </div>
+          <div class="combo-input">
+            <span>1타(기본):</span>
+            <input type="text" value="${z.combos[0] || ''}" placeholder="기본 터치 반응 지문">
+          </div>
+          <div class="combo-input">
+            <span>2타(연타):</span>
+            <input type="text" value="${z.combos[1] || ''}" placeholder="2타 연속 반응 지문">
+          </div>
+          <div class="combo-input">
+            <span>3타(심화):</span>
+            <input type="text" value="${z.combos[2] || ''}" placeholder="3타 심화 콤보 지문">
+          </div>
+        `;
+
+        card.addEventListener('click', (e) => {
+          if (e.target.tagName === 'INPUT' || e.target.tagName === 'BUTTON') return;
+          activeZoneIdx = idx;
+          renderZoneCards();
+          redrawCanvas();
+        });
+
+        const inputs = card.querySelectorAll('input');
+        inputs[0].addEventListener('input', (e) => { z.label = e.target.value; redrawCanvas(); });
+        inputs[1].addEventListener('input', (e) => { z.key = e.target.value; redrawCanvas(); });
+        inputs[2].addEventListener('input', (e) => { z.combos[0] = e.target.value; });
+        inputs[3].addEventListener('input', (e) => { z.combos[1] = e.target.value; });
+        inputs[4].addEventListener('input', (e) => { z.combos[2] = e.target.value; });
+
+        card.querySelector('.btn-del-zone').addEventListener('click', (e) => {
+          e.stopPropagation();
+          zones.splice(idx, 1);
+          if (activeZoneIdx >= zones.length) activeZoneIdx = zones.length - 1;
+          renderZoneCards();
+          redrawCanvas();
+        });
+
+        zoneListContainer.appendChild(card);
+      });
+    }
+
+    // 퀵 칩 클릭 이벤트
+    document.querySelectorAll('.chip-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const label = btn.getAttribute('data-label');
+        const key = btn.getAttribute('data-key');
+        if (activeZoneIdx >= 0 && zones[activeZoneIdx]) {
+          zones[activeZoneIdx].label = label;
+          zones[activeZoneIdx].key = key + '_' + Date.now().toString().slice(-3);
+          renderZoneCards();
+          redrawCanvas();
+        } else {
+          alert('먼저 오른쪽 일러스트 위에서 마우스로 영역을 드래그해 부위를 생성하세요!');
+        }
+      });
+    });
+
+    // JSON 내보내기 (Export)
+    document.getElementById('btnExportJson').addEventListener('click', () => {
+      if (zones.length === 0) {
+        alert('최소 1개 이상의 터치 부위를 드래그해 만들어주세요.');
+        return;
+      }
+
+      const exportData = {
+        format: "TouchRP_Cartridge_v1",
+        character: {
+          id: document.getElementById('charId').value.trim() || 'char_' + Date.now(),
+          name: document.getElementById('charName').value.trim() || '이름 없음',
+          gender: document.getElementById('charGender') ? document.getElementById('charGender').value : 'female',
+          scenarioDesc: document.getElementById('charScenario').value.trim() || '',
+          frontImage: base64Image,
+          avatar: base64Image
+        },
+        touchActions: zones
+      };
+
+      const blob = new Blob([JSON.stringify(exportData, null, 2)], { type: 'application/json' });
+      const a = document.createElement('a');
+      a.href = URL.createObjectURL(blob);
+      a.download = `${exportData.character.name}_TouchPack.json`;
+      a.click();
+      URL.revokeObjectURL(a.href);
+    });
+
+    // JSON 불러오기 (Import)
+    document.getElementById('btnImportJson').addEventListener('click', () => {
+      document.getElementById('jsonUpload').click();
+    });
+    document.getElementById('jsonUpload').addEventListener('change', (e) => {
+      const file = e.target.files[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = (ev) => {
+        try {
+          const data = JSON.parse(ev.target.result);
+          if (data.character) {
+            document.getElementById('charId').value = data.character.id || '';
+            document.getElementById('charName').value = data.character.name || '';
+            if (data.character.gender && document.getElementById('charGender')) {
+              document.getElementById('charGender').value = data.character.gender;
+            }
+            document.getElementById('charScenario').value = data.character.scenarioDesc || '';
+            if (data.character.frontImage) {
+              base64Image = data.character.frontImage;
+              charImg.src = base64Image;
+              charImg.onload = () => {
+                imgContainer.style.display = 'flex';
+                emptyPrompt.style.display = 'none';
+                syncCanvasSize();
+                redrawCanvas();
+              };
+            }
+          }
+          zones = data.touchActions || [];
+          activeZoneIdx = zones.length - 1;
+          renderZoneCards();
+          redrawCanvas();
+        } catch (err) {
+          alert('JSON 파일 형식이 올바르지 않습니다.');
+        }
+      };
+      reader.readAsText(file);
+    });
+  </script>
+</body>
+</html>
