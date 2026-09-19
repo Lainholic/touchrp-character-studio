@@ -303,15 +303,17 @@
   <div class="sidebar">
     <div class="header">
       <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
-        <h2 style="margin:0; font-size:1.1rem;">🎴 TouchRP 캐릭터 스튜디오</h2>
+        <h2 style="margin:0; font-size:1.05rem; display:flex; align-items:center; gap:5px;">
+          🎴 TouchRP & 실리태번 스튜디오
+        </h2>
         <button type="button" id="btnDownloadHtml" style="background:linear-gradient(135deg, #00f0ff, #0077ff); color:#000; border:none; border-radius:6px; padding:6px 12px; font-size:0.75rem; font-weight:bold; cursor:pointer; display:flex; align-items:center; gap:4px; box-shadow:0 0 10px rgba(0,240,255,0.4);" title="인터넷 없이 평생 소장할 수 있는 단일 HTML 파일로 저장합니다.">
           💾 내 PC에 저장
         </button>
       </div>
       <div style="background:rgba(0, 240, 255, 0.08); border:1px dashed var(--accent-cyan); border-radius:6px; padding:6px 8px; margin-bottom:6px; font-size:0.75rem; color:#e2e8f0; line-height:1.4;">
-        <span style="color:var(--accent-cyan); font-weight:bold;">⚡ 설치 불필요:</span> 지금 이 화면에서 이미지를 바로 선택하시거나 끌어다 놓으시면 즉시 작동합니다! (100% 로컬)
+        <span style="color:var(--accent-cyan); font-weight:bold;">⚡ 설치 불필요:</span> 브라우저에서 바로 작동합니다! (실리태번용 투명 아바타 PNG 다운로드 & 캐릭터 제작 무료 지원)
       </div>
-      <p>스탠딩 일러스트에 터치 부위를 지정하고 3단계 콤보 지문을 작성하여 완성 캐릭터 팩을 제작합니다.</p>
+      <p>터치 부위를 넣지 않아도 <strong>실리태번 투명 아바타</strong>로 저장 가능하며, 터치 부위를 넣으면 <strong>터치RP</strong>에서 만질 수 있는 인터랙티브 팩이 완성됩니다.</p>
     </div>
 
     <div class="content-area">
@@ -330,8 +332,8 @@
             <button type="button" id="btnRemoveBlack" class="chip-btn" style="flex:1; padding:6px 0; text-align:center;">⚫ 외곽 검은색 지우기</button>
           </div>
           <div style="display:flex; gap:6px; margin-bottom:8px;">
-            <button type="button" id="btnSpotEraser" class="chip-btn" style="flex:1; padding:6px 0; text-align:center; border-color:var(--accent-magenta); color:var(--accent-magenta);">🎯 스팟 지우개 (남은 부위 콕 찍기)</button>
-            <button type="button" id="btnDownloadPng" class="chip-btn" style="flex:1; padding:6px 0; text-align:center; border-color:var(--success); color:var(--success);">📥 투명 PNG 저장</button>
+            <button type="button" id="btnSpotEraser" class="chip-btn" style="flex:1; padding:6px 0; text-align:center; border-color:var(--accent-magenta); color:var(--accent-magenta);">🎯 스팟 지우개 (틈새 콕 찍기)</button>
+            <button type="button" id="btnDownloadPng" class="chip-btn" style="flex:1.2; padding:6px 0; text-align:center; border-color:var(--success); color:var(--success); font-weight:bold;">📥 실리태번용 투명 PNG 저장</button>
           </div>
           <div style="display:flex; align-items:center; gap:8px;">
             <span style="font-size:0.75rem; color:var(--text-sub);">강도:</span>
