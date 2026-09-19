@@ -63,9 +63,56 @@
 ---
 
 ## 🇺🇸 English
-> **"A lightweight web tool to remove AI backgrounds without ruining white clothes, export transparent PNGs, and map touch hitboxes in seconds."**
+> **"A lightweight zero-install web tool to remove AI illustration backgrounds cleanly, export transparent PNGs, and configure interactive touch hitboxes in seconds."**
 
-👉 **[Official TouchRP Studio & Links](https://bit.ly/4rqAR32)**
+### ⚡ Quick Guide
+1. Click **[🌐 Launch Web Studio (Zero Install)]** above or download the single offline HTML file.
+2. Drag & drop your character image onto the canvas.
+3. Choose your background removal method:
+   - **Solid / Simple Background**: Click `[⚪ Remove White Outline]` or use `[🎯 Spot Eraser]` to make gaps transparent in 0.01s without damaging white clothes!
+   - **Complex Street / Scenery**: Click `[🤖 AI Precision BG Removal]` to automatically isolate the character via local WebAssembly AI.
+4. **Transparent PNG**: Click `[📥 Save Transparent PNG]`.
+5. **Interactive Touch Card**: Drag on the canvas to define hitboxes, choose body parts, and click `[💾 Export Pack]`.
+
+### 🎮 Bring Your Characters to Life in TouchRP Engine
+Import your exported `.json` into the **[TouchRP Studio Engine]** to touch, caress, sense dynamic heartbeats, and roleplay via local/cloud LLMs!  
+👉 **[Visit Official TouchRP Linktree](https://bit.ly/4rqAR32)**
+
+---
+
+## 🇯🇵 日本語
+> **"インストール不要！ブラウザ上で10秒で白服を削らず綺麗に背景透過PNGを作成し、インタラクティブなタッチ当たり判定を設定できる無料Webツールです。"**
+
+### ⚡ クイック使い方
+1. 上部の **[🌐 Webでインストールなしですぐ実行]** をクリックするか、HTMLファイルをダウンロードして開きます。
+2. 立ち絵画像を画面にドラッグ＆ドロップします。
+3. 背景透過の選択:
+   - **単色・シンプル背景**: `[⚪ 白背景を透過]` をクリックするか、`[🎯 スポット消しゴム]` で隙間をワンクリックするだけで0.01秒で透過！
+   - **風景・複雑な背景**: `[🤖 AI精密背景透過]` をクリックすると、AIが人物だけを自動抽出して背景を綺麗に除去します。
+4. **透過PNGのみ保存**: `[📥 高画質透過PNG保存]` をクリック！
+5. **タッチRPカード作成**: キャンバス上をドラッグして部位（頭・胸・太もも等）を指定し、`[💾 パック保存]` をクリック！
+
+### 🎮 TouchRP Studio 本編エンジンとの連携
+作成したキャラパックを **[TouchRP Studio]** に読み込むと、**キャラに触れてスキンシップを取りながら、リアルタイムの心拍数や恥じらいの反応を感じつつLLMと対話ロールプレイ**を楽しめます！  
+👉 **[TouchRP Studio 公式リンク集はこちら](https://bit.ly/4rqAR32)**
+
+---
+
+## 🇹🇼 繁體中文
+> **"無需安裝！在瀏覽器中 10 秒內快速清除 AI 插畫背景、匯出高清透明 PNG，並繪製互動觸摸區域的免費開源工具。"**
+
+### ⚡ 快速上手指南
+1. 點擊上方的 **[🌐 網頁即用 (免安裝)]** 按鈕，或下載單一離線 HTML 檔案開啟。
+2. 將角色立繪圖片拖曳到工作區中。
+3. 選擇去背方式：
+   - **純色 / 簡約背景**：點擊 `[⚪ 去除白色外廓]` 或使用 `[🎯 吸管擦除]` 點擊縫隙，0.01 秒極速去背且不傷白衣！
+   - **複雜街景 / 風景背景**：點擊 `[🤖 AI 智能摳圖]`，本機 WebAssembly AI 自動精準分離人物。
+4. **僅需透明立繪**：點擊 `[📥 保存高清透明PNG]`！
+5. **製作互動觸摸卡**：在畫布上拖曳選取觸摸區域（頭部、胸部、大腿等），然後點擊 `[💾 導出角色包]`！
+
+### 🎮 連動 TouchRP 官方引擎享受生動互動
+將匯出的角色包導入 **[TouchRP Studio]** 引擎，即可**親手觸摸角色（肢體接觸）、感受即時心跳與害羞反應，並透過 LLM 自由進行沉浸式角色扮演**！  
+👉 **[前往 TouchRP Studio 官方傳送門](https://bit.ly/4rqAR32)**
 
 ---
 
