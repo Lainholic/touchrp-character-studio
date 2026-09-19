@@ -323,10 +323,22 @@
         
         <!-- 원클릭 누끼(배경 투명화) 도구 박스 -->
         <div id="bgRemoveBox" style="display:none; margin-top:10px; background:rgba(0, 240, 255, 0.06); border:1px solid rgba(0, 240, 255, 0.25); border-radius:8px; padding:10px;">
-          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;">
-            <span style="font-size:0.8rem; font-weight:bold; color:var(--accent-cyan);">🪄 원클릭 배경 누끼(투명화)</span>
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
+            <span style="font-size:0.8rem; font-weight:bold; color:var(--accent-cyan);">🪄 배경 누끼(투명화) 모드</span>
             <button type="button" id="btnResetImg" style="background:none; border:none; color:#94a3b8; font-size:0.75rem; cursor:pointer;">↩ 원본복구</button>
           </div>
+
+          <!-- 🤖 AI 정밀 누끼 버튼 (풍경/복잡한 배경) -->
+          <div style="margin-bottom:10px;">
+            <button type="button" id="btnAiRemoveBg" style="width:100%; padding:8px 0; background:linear-gradient(135deg, #ff77a8, #7928ca); color:#fff; border:none; border-radius:6px; font-size:0.82rem; font-weight:bold; cursor:pointer; display:flex; align-items:center; justify-content:center; gap:6px; box-shadow:0 0 12px rgba(255,119,168,0.4); transition:all 0.2s;">
+              🤖 [AI 정밀 누끼] 풍경/복잡한 배경 인물 분리
+            </button>
+            <div id="aiLoadingStatus" style="display:none; margin-top:6px; font-size:0.74rem; color:#00f0ff; text-align:center; background:rgba(0,0,0,0.5); border:1px solid rgba(0,240,255,0.3); padding:6px; border-radius:6px;">
+              ⏳ AI 모델 연산 중: <span id="aiProgressText" style="font-weight:bold;">준비 중...</span>
+            </div>
+          </div>
+
+          <div style="font-size:0.75rem; color:#94a3b8; margin-bottom:4px; font-weight:600;">⚡ 단색/심플 배경 초고속 제거:</div>
           <div style="display:flex; gap:6px; margin-bottom:6px;">
             <button type="button" id="btnRemoveWhite" class="chip-btn" style="flex:1; padding:6px 0; text-align:center;">⚪ 외곽 흰색 지우기</button>
             <button type="button" id="btnRemoveBlack" class="chip-btn" style="flex:1; padding:6px 0; text-align:center;">⚫ 외곽 검은색 지우기</button>
@@ -925,6 +937,59 @@
       document.body.removeChild(a);
       URL.revokeObjectURL(url);
       alert('🎉 TouchRP 캐릭터 스튜디오가 다운로드되었습니다!\n\n이제 인터넷 연결 없이도 다운로드된 HTML 파일을 더블클릭하시면 언제든 사용하실 수 있습니다.');
+    });
+
+    // 🤖 AI 정밀 누끼 (클라이언트 사이드 WebAssembly / ONNX)
+    document.getElementById('btnAiRemoveBg').addEventListener('click', async () => {
+      if (!charImg.src || !base64Image) {
+        alert('먼저 이미지를 불러와주세요.');
+        return;
+      }
+
+      const btn = document.getElementById('btnAiRemoveBg');
+      const statusBox = document.getElementById('aiLoadingStatus');
+      const progressText = document.getElementById('aiProgressText');
+
+      btn.disabled = true;
+      btn.style.opacity = '0.6';
+      statusBox.style.display = 'block';
+      progressText.textContent = 'AI 모듈 및 모델 로딩 중...';
+
+      try {
+        const { removeBackground } = await import('https://cdn.jsdelivr.net/npm/@imgly/background-removal@1.5.7/+esm');
+        
+        progressText.textContent = '인물 외곽선 분석 및 배경 분리 중...';
+
+        const blob = await removeBackground(charImg.src, {
+          progress: (key, current, total) => {
+            if (total > 0) {
+              const pct = Math.round((current / total) * 100);
+              progressText.textContent = `${key} 준비 중... ${pct}%`;
+            }
+          }
+        });
+
+        const reader = new FileReader();
+        reader.onload = (e) => {
+          base64Image = e.target.result;
+          charImg.src = base64Image;
+          charImg.onload = () => {
+            syncCanvasSize();
+            redrawCanvas();
+            statusBox.style.display = 'none';
+            btn.disabled = false;
+            btn.style.opacity = '1';
+            alert('✨ AI 정밀 누끼가 완료되었습니다!\n\n필요시 [🎯 스팟 지우개]로 미세 틈새를 다듬거나, 바로 [📥 고화질 투명 PNG 저장]을 누르시면 됩니다.');
+          };
+        };
+        reader.readAsDataURL(blob);
+      } catch (err) {
+        console.error('AI background removal error:', err);
+        statusBox.style.display = 'none';
+        btn.disabled = false;
+        btn.style.opacity = '1';
+        alert('AI 누끼 처리 중 오류가 발생했습니다: ' + err.message + '\n\n(단색 배경일 경우 [⚪ 외곽 흰색 지우기] 또는 [🎯 스팟 지우개]를 이용하시면 0.01초 만에 투명화됩니다.)');
+      }
     });
   </script>
 </body>
