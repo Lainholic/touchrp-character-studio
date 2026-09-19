@@ -303,56 +303,65 @@
   <div class="sidebar">
     <div class="header">
       <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
-        <h2 style="margin:0; font-size:1.05rem; display:flex; align-items:center; gap:5px;">
+        <h2 style="margin:0; font-size:1.0rem; display:flex; align-items:center; gap:5px;" id="ui_title">
           🎴 TouchRP & 실리태번 스튜디오
         </h2>
-        <button type="button" id="btnDownloadHtml" style="background:linear-gradient(135deg, #00f0ff, #0077ff); color:#000; border:none; border-radius:6px; padding:6px 12px; font-size:0.75rem; font-weight:bold; cursor:pointer; display:flex; align-items:center; gap:4px; box-shadow:0 0 10px rgba(0,240,255,0.4);" title="인터넷 없이 평생 소장할 수 있는 단일 HTML 파일로 저장합니다.">
-          💾 내 PC에 저장
-        </button>
+        <div style="display:flex; gap:5px; align-items:center;">
+          <!-- 🌐 4개국어 원클릭 언어 스위처 -->
+          <div class="lang-switch" style="display:flex; gap:2px; background:rgba(0,0,0,0.6); padding:2px; border-radius:6px; border:1px solid rgba(0,240,255,0.3);">
+            <button type="button" class="lang-btn active" data-lang="ko" style="background:var(--accent-cyan); color:#000; border:none; border-radius:4px; padding:2px 5px; font-size:0.68rem; font-weight:bold; cursor:pointer;">KO</button>
+            <button type="button" class="lang-btn" data-lang="en" style="background:transparent; color:#94a3b8; border:none; border-radius:4px; padding:2px 5px; font-size:0.68rem; font-weight:bold; cursor:pointer;">EN</button>
+            <button type="button" class="lang-btn" data-lang="ja" style="background:transparent; color:#94a3b8; border:none; border-radius:4px; padding:2px 5px; font-size:0.68rem; font-weight:bold; cursor:pointer;">JA</button>
+            <button type="button" class="lang-btn" data-lang="zh" style="background:transparent; color:#94a3b8; border:none; border-radius:4px; padding:2px 5px; font-size:0.68rem; font-weight:bold; cursor:pointer;">ZH</button>
+          </div>
+          <button type="button" id="btnDownloadHtml" style="background:linear-gradient(135deg, #00f0ff, #0077ff); color:#000; border:none; border-radius:6px; padding:4px 8px; font-size:0.72rem; font-weight:bold; cursor:pointer; display:flex; align-items:center; gap:3px; box-shadow:0 0 10px rgba(0,240,255,0.4);" title="인터넷 없이 평생 소장할 수 있는 단일 HTML 파일로 저장합니다.">
+            💾 <span id="ui_btn_save_pc">내 PC 저장</span>
+          </button>
+        </div>
       </div>
       <div style="background:rgba(0, 240, 255, 0.08); border:1px dashed var(--accent-cyan); border-radius:6px; padding:6px 8px; margin-bottom:6px; font-size:0.75rem; color:#e2e8f0; line-height:1.4;">
-        <span style="color:var(--accent-cyan); font-weight:bold;">⚡ 설치 불필요:</span> 브라우저에서 100% 로컬로 작동합니다! (AI 그림 배경 누끼 / 실리태번 아바타 / 터치 카드 제작 무료 지원)
+        <span style="color:var(--accent-cyan); font-weight:bold;" id="ui_banner_badge">⚡ 설치 불필요:</span> <span id="ui_banner_desc">브라우저에서 100% 로컬로 작동합니다! (AI 그림 배경 누끼 / 실리태번 아바타 / 터치 카드 제작 무료 지원)</span>
       </div>
-      <p>일러스트 배경을 지우고 <strong>고화질 투명 PNG</strong>로 저장하거나, 터치 부위를 지정하여 <strong>인터랙티브 캐릭터 팩</strong>을 제작할 수 있습니다.</p>
+      <p id="ui_sub_desc">일러스트 배경을 지우고 <strong>고화질 투명 PNG</strong>로 저장하거나, 터치 부위를 지정하여 <strong>인터랙티브 캐릭터 팩</strong>을 제작할 수 있습니다.</p>
     </div>
 
     <div class="content-area">
       <div class="form-group">
-        <label>1. 캐릭터 스탠딩 이미지</label>
+        <label id="ui_lbl_img">1. 캐릭터 스탠딩 이미지</label>
         <input type="file" id="imgUpload" accept="image/*">
         
         <!-- 원클릭 누끼(배경 투명화) 도구 박스 -->
         <div id="bgRemoveBox" style="display:none; margin-top:10px; background:rgba(0, 240, 255, 0.06); border:1px solid rgba(0, 240, 255, 0.25); border-radius:8px; padding:10px;">
           <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
-            <span style="font-size:0.8rem; font-weight:bold; color:var(--accent-cyan);">🪄 배경 누끼(투명화) 모드</span>
-            <button type="button" id="btnResetImg" style="background:none; border:none; color:#94a3b8; font-size:0.75rem; cursor:pointer;">↩ 원본복구</button>
+            <span style="font-size:0.8rem; font-weight:bold; color:var(--accent-cyan);" id="ui_bg_title">🪄 배경 누끼(투명화) 모드</span>
+            <button type="button" id="btnResetImg" style="background:none; border:none; color:#94a3b8; font-size:0.75rem; cursor:pointer;">↩ <span id="ui_btn_reset">원본복구</span></button>
           </div>
 
           <!-- 🤖 AI 정밀 누끼 버튼 (풍경/복잡한 배경) -->
           <div style="margin-bottom:10px;">
             <button type="button" id="btnAiRemoveBg" style="width:100%; padding:8px 0; background:linear-gradient(135deg, #ff77a8, #7928ca); color:#fff; border:none; border-radius:6px; font-size:0.82rem; font-weight:bold; cursor:pointer; display:flex; align-items:center; justify-content:center; gap:6px; box-shadow:0 0 12px rgba(255,119,168,0.4); transition:all 0.2s;">
-              🤖 [AI 정밀 누끼] 풍경/복잡한 배경 인물 분리
+              🤖 <span id="ui_btn_ai_bg"> [AI 정밀 누끼] 풍경/복잡한 배경 인물 분리</span>
             </button>
             <div id="aiLoadingStatus" style="display:none; margin-top:6px; font-size:0.74rem; color:#00f0ff; text-align:center; background:rgba(0,0,0,0.5); border:1px solid rgba(0,240,255,0.3); padding:6px; border-radius:6px;">
-              ⏳ AI 모델 연산 중: <span id="aiProgressText" style="font-weight:bold;">준비 중...</span>
+              ⏳ <span id="ui_ai_status_prefix">AI 모델 연산 중:</span> <span id="aiProgressText" style="font-weight:bold;">준비 중...</span>
             </div>
           </div>
 
-          <div style="font-size:0.75rem; color:#94a3b8; margin-bottom:4px; font-weight:600;">⚡ 단색/심플 배경 초고속 제거:</div>
+          <div style="font-size:0.75rem; color:#94a3b8; margin-bottom:4px; font-weight:600;" id="ui_txt_mono">⚡ 단색/심플 배경 초고속 제거:</div>
           <div style="display:flex; gap:6px; margin-bottom:6px;">
-            <button type="button" id="btnRemoveWhite" class="chip-btn" style="flex:1; padding:6px 0; text-align:center;">⚪ 외곽 흰색 지우기</button>
-            <button type="button" id="btnRemoveBlack" class="chip-btn" style="flex:1; padding:6px 0; text-align:center;">⚫ 외곽 검은색 지우기</button>
+            <button type="button" id="btnRemoveWhite" class="chip-btn" style="flex:1; padding:6px 0; text-align:center;">⚪ <span id="ui_btn_white">외곽 흰색 지우기</span></button>
+            <button type="button" id="btnRemoveBlack" class="chip-btn" style="flex:1; padding:6px 0; text-align:center;">⚫ <span id="ui_btn_black">외곽 검은색 지우기</span></button>
           </div>
           <div style="display:flex; gap:6px; margin-bottom:8px;">
-            <button type="button" id="btnSpotEraser" class="chip-btn" style="flex:1; padding:6px 0; text-align:center; border-color:var(--accent-magenta); color:var(--accent-magenta);">🎯 스팟 지우개 (틈새 콕 찍기)</button>
-            <button type="button" id="btnDownloadPng" class="chip-btn" style="flex:1.2; padding:6px 0; text-align:center; border-color:var(--success); color:var(--success); font-weight:bold;">📥 고화질 투명 PNG 저장</button>
+            <button type="button" id="btnSpotEraser" class="chip-btn" style="flex:1; padding:6px 0; text-align:center; border-color:var(--accent-magenta); color:var(--accent-magenta);">🎯 <span id="ui_btn_spot">스팟 지우개 (틈새 콕 찍기)</span></button>
+            <button type="button" id="btnDownloadPng" class="chip-btn" style="flex:1.2; padding:6px 0; text-align:center; border-color:var(--success); color:var(--success); font-weight:bold;">📥 <span id="ui_btn_png">고화질 투명 PNG 저장</span></button>
           </div>
           <div style="display:flex; align-items:center; gap:8px;">
-            <span style="font-size:0.75rem; color:var(--text-sub);">강도:</span>
+            <span style="font-size:0.75rem; color:var(--text-sub);" id="ui_lbl_tolerance">강도:</span>
             <input type="range" id="toleranceRange" min="10" max="90" value="35" style="flex:1; height:4px; accent-color:var(--accent-cyan);">
             <span id="toleranceVal" style="font-size:0.75rem; color:var(--accent-cyan); font-weight:bold; width:28px;">35</span>
           </div>
-          <div style="margin-top:8px; padding-top:6px; border-top:1px dashed rgba(0,240,255,0.2); font-size:0.72rem; color:#94a3b8; line-height:1.4;">
+          <div style="margin-top:8px; padding-top:6px; border-top:1px dashed rgba(0,240,255,0.2); font-size:0.72rem; color:#94a3b8; line-height:1.4;" id="ui_tip_box">
             💡 <strong style="color:var(--accent-cyan);">생성 팁:</strong> AI 그림 생성 시 <code style="color:#ff77a8; background:rgba(255,119,168,0.1); padding:1px 4px; border-radius:3px;">simple background</code>, <code style="color:#00f0ff; background:rgba(0,240,255,0.1); padding:1px 4px; border-radius:3px;">white background</code> 등 <strong>단색 배경</strong>으로 뽑으시면 흰옷을 파먹지 않고 가장 완벽하게 누끼가 따집니다! (기타 단색은 <strong>스팟 지우개</strong>로 콕 찍으면 즉시 투명화)
           </div>
         </div>
@@ -360,44 +369,44 @@
 
       <!-- 공식 TouchRP 엔진 홍보 배너 -->
       <div style="background: rgba(0, 240, 255, 0.06); border: 1px solid rgba(0, 240, 255, 0.25); border-radius: 8px; padding: 10px; margin-bottom: 12px; text-align: center;">
-        <div style="font-size: 0.74rem; color: #94a3b8; margin-bottom: 4px;">✨ 내가 만든 캐릭터를 터치하며 대화하고 싶다면?</div>
-        <a href="https://bit.ly/4rqAR32" target="_blank" rel="noopener noreferrer" style="display: inline-block; font-size: 0.82rem; font-weight: bold; color: var(--accent-cyan); text-decoration: none; text-shadow: var(--glow-cyan);">
+        <div style="font-size: 0.74rem; color: #94a3b8; margin-bottom: 4px;" id="ui_banner_sub">✨ 내가 만든 캐릭터를 터치하며 대화하고 싶다면?</div>
+        <a href="https://bit.ly/4rqAR32" target="_blank" rel="noopener noreferrer" style="display: inline-block; font-size: 0.82rem; font-weight: bold; color: var(--accent-cyan); text-decoration: none; text-shadow: var(--glow-cyan);" id="ui_banner_link">
           🎮 [TouchRP Studio] 공식 엔진 보러가기 ➜
         </a>
       </div>
 
       <div class="form-group">
-        <label>캐릭터 식별 ID / 이름 / 성별</label>
+        <label id="ui_lbl_profile">캐릭터 식별 ID / 이름 / 성별</label>
         <div style="display:flex; gap:6px;">
           <input type="text" id="charId" placeholder="char_yuki" style="width:35%;">
           <input type="text" id="charName" placeholder="유키" style="width:40%;">
           <select id="charGender" style="width:25%; padding:9px 6px; font-size:0.82rem;">
-            <option value="female" selected>여성</option>
-            <option value="male">남성</option>
+            <option value="female" selected id="opt_female">여성</option>
+            <option value="male" id="opt_male">남성</option>
           </select>
         </div>
       </div>
 
       <div class="form-group">
-        <label>성격 / 시나리오 요약</label>
+        <label id="ui_lbl_scenario">성격 / 시나리오 요약</label>
         <textarea id="charScenario" rows="2" placeholder="새벽 골목길에서 비를 피하는 과묵한 성격"></textarea>
       </div>
 
       <hr style="border:none; border-top:1px solid rgba(0, 240, 255, 0.15); margin: 16px 0;">
 
       <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
-        <label style="margin:0;">2. 설정된 터치 히트박스 목록</label>
+        <label style="margin:0;" id="ui_lbl_zones">2. 설정된 터치 히트박스 목록</label>
         <span id="zoneCount" style="font-size:0.75rem; color:var(--accent-cyan); font-weight:bold;">0개 부위</span>
       </div>
 
       <div class="quick-chips" id="quickChips">
-        <button class="chip-btn" data-label="머리" data-key="head">머리</button>
-        <button class="chip-btn" data-label="가슴" data-key="chest">가슴</button>
-        <button class="chip-btn" data-label="허벅지" data-key="thigh">허벅지</button>
-        <button class="chip-btn" data-label="손/팔" data-key="hand">손/팔</button>
-        <button class="chip-btn" data-label="입술" data-key="lips">입술</button>
-        <button class="chip-btn" data-label="엉덩이" data-key="hip">엉덩이</button>
-        <button class="chip-btn" data-label="귀/뿔" data-key="ear">귀/뿔</button>
+        <button class="chip-btn" data-label="머리" data-key="head" id="chip_head">머리</button>
+        <button class="chip-btn" data-label="가슴" data-key="chest" id="chip_chest">가슴</button>
+        <button class="chip-btn" data-label="허벅지" data-key="thigh" id="chip_thigh">허벅지</button>
+        <button class="chip-btn" data-label="손/팔" data-key="hand" id="chip_hand">손/팔</button>
+        <button class="chip-btn" data-label="입술" data-key="lips" id="chip_lips">입술</button>
+        <button class="chip-btn" data-label="엉덩이" data-key="hip" id="chip_hip">엉덩이</button>
+        <button class="chip-btn" data-label="귀/뿔" data-key="ear" id="chip_ear">귀/뿔</button>
       </div>
 
       <div id="zoneListContainer">
@@ -406,8 +415,8 @@
     </div>
 
     <div class="footer">
-      <button class="btn btn-secondary" id="btnImportJson">📂 기존 JSON</button>
-      <button class="btn btn-primary" id="btnExportJson">💾 완성 팩 저장</button>
+      <button class="btn btn-secondary" id="btnImportJson">📂 <span id="ui_btn_import">기존 JSON</span></button>
+      <button class="btn btn-primary" id="btnExportJson">💾 <span id="ui_btn_export">완성 팩 저장</span></button>
       <input type="file" id="jsonUpload" accept=".json" style="display:none;">
     </div>
   </div>
@@ -415,15 +424,15 @@
   <!-- 우측 캔버스 작업대 -->
   <div class="workspace" id="workspace">
     <div class="empty-prompt" id="emptyPrompt">
-      <h3 style="font-size:1.5rem; margin-bottom:8px;">✨ 웹에서 바로 쓰는 무료 캐릭터 스튜디오</h3>
-      <p style="font-size:0.95rem; color:#cbd5e1; line-height:1.6; margin-bottom:14px;">
+      <h3 style="font-size:1.5rem; margin-bottom:8px;" id="ui_empty_h3">✨ 웹에서 바로 쓰는 무료 캐릭터 스튜디오</h3>
+      <p style="font-size:0.95rem; color:#cbd5e1; line-height:1.6; margin-bottom:14px;" id="ui_empty_p">
         별도 설치나 다운로드 필요 없이, <strong>여기로 캐릭터 이미지를 드래그</strong>하시거나 좌측에서 선택하세요!<br>
         100% 브라우저 로컬에서 안전하게 처리되며 원클릭 누끼와 터치 부위 설정이 가능합니다.
       </p>
       <div style="display:inline-flex; gap:10px; justify-content:center; flex-wrap:wrap;">
-        <span style="background:rgba(0,240,255,0.12); border:1px solid rgba(0,240,255,0.4); border-radius:20px; padding:6px 14px; font-size:0.8rem; color:#00f0ff; font-weight:bold;">🪄 원클릭 누끼</span>
-        <span style="background:rgba(255,119,168,0.12); border:1px solid rgba(255,119,168,0.4); border-radius:20px; padding:6px 14px; font-size:0.8rem; color:#ff77a8; font-weight:bold;">🎯 터치 부위 지정</span>
-        <span style="background:rgba(0,240,255,0.12); border:1px solid rgba(0,240,255,0.4); border-radius:20px; padding:6px 14px; font-size:0.8rem; color:#00f0ff; font-weight:bold;">📦 원클릭 팩 저장</span>
+        <span style="background:rgba(0,240,255,0.12); border:1px solid rgba(0,240,255,0.4); border-radius:20px; padding:6px 14px; font-size:0.8rem; color:#00f0ff; font-weight:bold;" id="ui_badge_1">🪄 원클릭 누끼</span>
+        <span style="background:rgba(255,119,168,0.12); border:1px solid rgba(255,119,168,0.4); border-radius:20px; padding:6px 14px; font-size:0.8rem; color:#ff77a8; font-weight:bold;" id="ui_badge_2">🎯 터치 부위 지정</span>
+        <span style="background:rgba(0,240,255,0.12); border:1px solid rgba(0,240,255,0.4); border-radius:20px; padding:6px 14px; font-size:0.8rem; color:#00f0ff; font-weight:bold;" id="ui_badge_3">📦 원클릭 팩 저장</span>
       </div>
     </div>
 
@@ -942,7 +951,7 @@
     // 🤖 AI 정밀 누끼 (클라이언트 사이드 WebAssembly / ONNX)
     document.getElementById('btnAiRemoveBg').addEventListener('click', async () => {
       if (!charImg.src || !base64Image) {
-        alert('먼저 이미지를 불러와주세요.');
+        alert(I18N[currentLang]?.alert_load_img || '먼저 이미지를 불러와주세요.');
         return;
       }
 
@@ -953,18 +962,18 @@
       btn.disabled = true;
       btn.style.opacity = '0.6';
       statusBox.style.display = 'block';
-      progressText.textContent = 'AI 모듈 및 모델 로딩 중...';
+      progressText.textContent = I18N[currentLang]?.ai_loading || 'AI 모듈 및 모델 로딩 중...';
 
       try {
         const { removeBackground } = await import('https://cdn.jsdelivr.net/npm/@imgly/background-removal@1.5.7/+esm');
         
-        progressText.textContent = '인물 외곽선 분석 및 배경 분리 중...';
+        progressText.textContent = I18N[currentLang]?.ai_analyzing || '인물 외곽선 분석 및 배경 분리 중...';
 
         const blob = await removeBackground(charImg.src, {
           progress: (key, current, total) => {
             if (total > 0) {
               const pct = Math.round((current / total) * 100);
-              progressText.textContent = `${key} 준비 중... ${pct}%`;
+              progressText.textContent = `${key} (${pct}%)`;
             }
           }
         });
@@ -979,7 +988,7 @@
             statusBox.style.display = 'none';
             btn.disabled = false;
             btn.style.opacity = '1';
-            alert('✨ AI 정밀 누끼가 완료되었습니다!\n\n필요시 [🎯 스팟 지우개]로 미세 틈새를 다듬거나, 바로 [📥 고화질 투명 PNG 저장]을 누르시면 됩니다.');
+            alert(I18N[currentLang]?.alert_ai_done || '✨ AI 정밀 누끼가 완료되었습니다!\n\n필요시 [🎯 스팟 지우개]로 미세 틈새를 다듬거나, 바로 [📥 고화질 투명 PNG 저장]을 누르시면 됩니다.');
           };
         };
         reader.readAsDataURL(blob);
@@ -991,6 +1000,237 @@
         alert('AI 누끼 처리 중 오류가 발생했습니다: ' + err.message + '\n\n(단색 배경일 경우 [⚪ 외곽 흰색 지우기] 또는 [🎯 스팟 지우개]를 이용하시면 0.01초 만에 투명화됩니다.)');
       }
     });
+
+    // 🌐 4개국어 (KO, EN, JA, ZH) 완벽 다국어 사전 및 전환 시스템
+    const I18N = {
+      ko: {
+        ui_title: "🎴 TouchRP & 실리태번 스튜디오",
+        ui_btn_save_pc: "내 PC 저장",
+        ui_banner_badge: "⚡ 설치 불필요:",
+        ui_banner_desc: "브라우저에서 100% 로컬로 작동합니다! (AI 그림 배경 누끼 / 실리태번 아바타 / 터치 카드 제작 무료 지원)",
+        ui_sub_desc: "일러스트 배경을 지우고 <strong>고화질 투명 PNG</strong>로 저장하거나, 터치 부위를 지정하여 <strong>인터랙티브 캐릭터 팩</strong>을 제작할 수 있습니다.",
+        ui_lbl_img: "1. 캐릭터 스탠딩 이미지",
+        ui_bg_title: "🪄 배경 누끼(투명화) 모드",
+        ui_btn_reset: "원본복구",
+        ui_btn_ai_bg: " [AI 정밀 누끼] 풍경/복잡한 배경 인물 분리",
+        ui_ai_status_prefix: "AI 모델 연산 중:",
+        ui_txt_mono: "⚡ 단색/심플 배경 초고속 제거:",
+        ui_btn_white: "외곽 흰색 지우기",
+        ui_btn_black: "외곽 검은색 지우기",
+        ui_btn_spot: "스팟 지우개 (틈새 콕 찍기)",
+        ui_btn_png: "고화질 투명 PNG 저장",
+        ui_lbl_tolerance: "강도:",
+        ui_tip_box: "💡 <strong style='color:var(--accent-cyan);'>생성 팁:</strong> AI 그림 생성 시 <code style='color:#ff77a8; background:rgba(255,119,168,0.1); padding:1px 4px; border-radius:3px;'>simple background</code>, <code style='color:#00f0ff; background:rgba(0,240,255,0.1); padding:1px 4px; border-radius:3px;'>white background</code> 등 <strong>단색 배경</strong>으로 뽑으시면 흰옷을 파먹지 않고 가장 완벽하게 누끼가 따집니다! (기타 단색은 <strong>스팟 지우개</strong>로 콕 찍으면 즉시 투명화)",
+        ui_banner_sub: "✨ 내가 만든 캐릭터를 터치하며 대화하고 싶다면?",
+        ui_banner_link: "🎮 [TouchRP Studio] 공식 엔진 보러가기 ➜",
+        ui_lbl_profile: "캐릭터 식별 ID / 이름 / 성별",
+        opt_female: "여성",
+        opt_male: "남성",
+        ui_lbl_scenario: "성격 / 시나리오 요약",
+        ui_lbl_zones: "2. 설정된 터치 히트박스 목록",
+        chip_head: "머리",
+        chip_chest: "가슴",
+        chip_thigh: "허벅지",
+        chip_hand: "손/팔",
+        chip_lips: "입술",
+        chip_hip: "엉덩이",
+        chip_ear: "귀/뿔",
+        ui_btn_import: "기존 JSON",
+        ui_btn_export: "완성 팩 저장",
+        ui_empty_h3: "✨ 웹에서 바로 쓰는 무료 캐릭터 스튜디오",
+        ui_empty_p: "별도 설치나 다운로드 필요 없이, <strong>여기로 캐릭터 이미지를 드래그</strong>하시거나 좌측에서 선택하세요!<br>100% 브라우저 로컬에서 안전하게 처리되며 원클릭 누끼와 터치 부위 설정이 가능합니다.",
+        ui_badge_1: "🪄 원클릭 누끼",
+        ui_badge_2: "🎯 터치 부위 지정",
+        ui_badge_3: "📦 원클릭 팩 저장",
+        alert_load_img: "먼저 이미지를 불러와주세요.",
+        ai_loading: "AI 모듈 및 모델 로딩 중...",
+        ai_analyzing: "인물 외곽선 분석 및 배경 분리 중...",
+        alert_ai_done: "✨ AI 정밀 누끼가 완료되었습니다!\n\n필요시 [🎯 스팟 지우개]로 미세 틈새를 다듬거나, 바로 [📥 고화질 투명 PNG 저장]을 누르시면 됩니다."
+      },
+      en: {
+        ui_title: "🎴 TouchRP & SillyTavern Studio",
+        ui_btn_save_pc: "Save App",
+        ui_banner_badge: "⚡ Zero Install:",
+        ui_banner_desc: "Runs 100% locally in your browser! (AI Background Remover / SillyTavern Avatar / Touch Cards)",
+        ui_sub_desc: "Remove illustration backgrounds to save <strong>Transparent PNGs</strong>, or define touch zones for <strong>Interactive Characters</strong>.",
+        ui_lbl_img: "1. Character Standing Image",
+        ui_bg_title: "🪄 Background Remover",
+        ui_btn_reset: "Reset",
+        ui_btn_ai_bg: " [AI Precision BG Removal] Separate Person from Complex BG",
+        ui_ai_status_prefix: "AI Processing:",
+        ui_txt_mono: "⚡ Fast Solid Color Remover:",
+        ui_btn_white: "Remove White",
+        ui_btn_black: "Remove Black",
+        ui_btn_spot: "Spot Eraser (Click Gaps)",
+        ui_btn_png: "Save Transparent PNG",
+        ui_lbl_tolerance: "Tolerance:",
+        ui_tip_box: "💡 <strong style='color:var(--accent-cyan);'>Gen Tip:</strong> Generate images with <code style='color:#ff77a8; background:rgba(255,119,168,0.1); padding:1px 4px; border-radius:3px;'>simple background</code> or <code style='color:#00f0ff; background:rgba(0,240,255,0.1); padding:1px 4px; border-radius:3px;'>white background</code> for lightning-fast 0.01s transparent cutout!",
+        ui_banner_sub: "✨ Want to talk with interactive touching?",
+        ui_banner_link: "🎮 Visit TouchRP Engine Official Repo ➜",
+        ui_lbl_profile: "Character ID / Name / Gender",
+        opt_female: "Female",
+        opt_male: "Male",
+        ui_lbl_scenario: "Personality / Scenario Summary",
+        ui_lbl_zones: "2. Configured Touch Hitboxes",
+        chip_head: "Head",
+        chip_chest: "Chest",
+        chip_thigh: "Thigh",
+        chip_hand: "Hand/Arm",
+        chip_lips: "Lips",
+        chip_hip: "Hips",
+        chip_ear: "Ears/Horns",
+        ui_btn_import: "Import JSON",
+        ui_btn_export: "Export Pack",
+        ui_empty_h3: "✨ Free Browser-Based Character Studio",
+        ui_empty_p: "No installation required! <strong>Drag & Drop your character image here</strong> or browse from the left.<br>Runs 100% client-side with AI background removal and hitbox mapping.",
+        ui_badge_1: "🪄 AI / Solid BG Removal",
+        ui_badge_2: "🎯 Touch Zone Mapping",
+        ui_badge_3: "📦 Export Character Pack",
+        alert_load_img: "Please upload an image first.",
+        ai_loading: "Loading AI model...",
+        ai_analyzing: "Analyzing contours and removing background...",
+        alert_ai_done: "✨ AI background removal complete!\n\nYou can refine edges with Spot Eraser or click [📥 Save Transparent PNG]."
+      },
+      ja: {
+        ui_title: "🎴 TouchRP & SillyTavern スタジオ",
+        ui_btn_save_pc: "PCに保存",
+        ui_banner_badge: "⚡ インストール不要:",
+        ui_banner_desc: "ブラウザ上で100%ローカル動作！（AI背景透過 / SillyTavernアバター / タッチパック無料作成）",
+        ui_sub_desc: "立ち絵の背景を透過して<strong>高画質透過PNG</strong>として保存したり、タッチ部位を設定して<strong>インタラクティブ立ち絵</strong>を作成できます。",
+        ui_lbl_img: "1. キャラクタースタンディング画像",
+        ui_bg_title: "🪄 背景透過（切り抜き）モード",
+        ui_btn_reset: "元に戻す",
+        ui_btn_ai_bg: " [AI精密背景透過] 風景・複雑な背景から人物を分離",
+        ui_ai_status_prefix: "AI処理中:",
+        ui_txt_mono: "⚡ 単色・シンプル背景の超高速除去:",
+        ui_btn_white: "白背景を透過",
+        ui_btn_black: "黒背景を透過",
+        ui_btn_spot: "スポット消しゴム (隙間クリック)",
+        ui_btn_png: "高画質透過PNG保存",
+        ui_lbl_tolerance: "許容値:",
+        ui_tip_box: "💡 <strong style='color:var(--accent-cyan);'>生成のコツ:</strong> <code style='color:#ff77a8; background:rgba(255,119,168,0.1); padding:1px 4px; border-radius:3px;'>simple background</code>、<code style='color:#00f0ff; background:rgba(0,240,255,0.1); padding:1px 4px; border-radius:3px;'>white background</code> などの単色背景で生成すると、白服を削らずに最速・完璧に切り抜けます！",
+        ui_banner_sub: "✨ 作成したキャラをタッチして会話したいですか？",
+        ui_banner_link: "🎮 [TouchRP Studio] 公式エンジンを見る ➜",
+        ui_lbl_profile: "キャラクターID / 名前 / 性別",
+        opt_female: "女性",
+        opt_male: "男性",
+        ui_lbl_scenario: "性格 / シナリオ要約",
+        ui_lbl_zones: "2. 設定済みタッチ当たり判定リスト",
+        chip_head: "頭",
+        chip_chest: "胸",
+        chip_thigh: "太もも",
+        chip_hand: "手/腕",
+        chip_lips: "唇",
+        chip_hip: "お尻",
+        chip_ear: "耳/角",
+        ui_btn_import: "JSON読込",
+        ui_btn_export: "パック保存",
+        ui_empty_h3: "✨ Webですぐ使える無料キャラクタースタジオ",
+        ui_empty_p: "ダウンロード不要！<strong>ここに立ち絵画像をドラッグ＆ドロップ</strong>するか左側から選択してください。<br>100%ブラウザ内で安全に動作し、ワンクリック切り抜きとタッチ判定作成が可能です。",
+        ui_badge_1: "🪄 ワンクリック切り抜き",
+        ui_badge_2: "🎯 タッチ部位指定",
+        ui_badge_3: "📦 ワンクリック保存",
+        alert_load_img: "先に画像を読み込んでください。",
+        ai_loading: "AIモデル読み込み中...",
+        ai_analyzing: "輪郭解析＆背景切り抜き中...",
+        alert_ai_done: "✨ AI精密切り抜きが完了しました！\n\n必要に応じて[🎯 スポット消しゴム]で微調整するか、[📥 高画質透過PNG保存]をクリックしてください。"
+      },
+      zh: {
+        ui_title: "🎴 TouchRP & 酒馆立绘工作室",
+        ui_btn_save_pc: "保存到电脑",
+        ui_banner_badge: "⚡ 免安装:",
+        ui_banner_desc: "100% 在浏览器本地运行！（AI 智能抠图 / 酒馆头像 / 触摸卡片制作）",
+        ui_sub_desc: "一键清除插画背景并保存为<strong>高清透明PNG</strong>，或配置触摸判定区域制作<strong>互动角色包</strong>。",
+        ui_lbl_img: "1. 角色立绘图片",
+        ui_bg_title: "🪄 背景抠图（透明化）模式",
+        ui_btn_reset: "还原",
+        ui_btn_ai_bg: " [AI 智能抠图] 复杂风景/背景人像精准分离",
+        ui_ai_status_prefix: "AI 运算中:",
+        ui_txt_mono: "⚡ 纯色/简单背景超速去除:",
+        ui_btn_white: "去除白色外廓",
+        ui_btn_black: "去除黑色外廓",
+        ui_btn_spot: "吸管擦除 (点击缝隙)",
+        ui_btn_png: "保存高清透明PNG",
+        ui_lbl_tolerance: "容差:",
+        ui_tip_box: "💡 <strong style='color:var(--accent-cyan);'>生成技巧:</strong> AI 生图时添加 <code style='color:#ff77a8; background:rgba(255,119,168,0.1); padding:1px 4px; border-radius:3px;'>simple background</code> 或 <code style='color:#00f0ff; background:rgba(0,240,255,0.1); padding:1px 4px; border-radius:3px;'>white background</code> 纯色背景，可实现 0.01 秒极致抠图！",
+        ui_banner_sub: "✨ 想触摸角色并进行互动对话吗？",
+        ui_banner_link: "🎮 访问 [TouchRP Studio] 官方引擎 ➜",
+        ui_lbl_profile: "角色 ID / 名字 / 性别",
+        opt_female: "女性",
+        opt_male: "男性",
+        ui_lbl_scenario: "性格 / 剧本设定",
+        ui_lbl_zones: "2. 已配置触摸判定区域",
+        chip_head: "头部",
+        chip_chest: "胸部",
+        chip_thigh: "大腿",
+        chip_hand: "手/手臂",
+        chip_lips: "嘴唇",
+        chip_hip: "臀部",
+        chip_ear: "耳朵/角",
+        ui_btn_import: "导入 JSON",
+        ui_btn_export: "导出角色包",
+        ui_empty_h3: "✨ 网页即用的免费角色制作工作室",
+        ui_empty_p: "无需安装或下载！<strong>直接拖拽立绘图片到此处</strong>或在左侧选择。<br>100% 浏览器本地安全处理，支持一键抠图与触摸判定绘制。",
+        ui_badge_1: "🪄 一键背景抠图",
+        ui_badge_2: "🎯 触摸判定绘制",
+        ui_badge_3: "📦 一键导出角色包",
+        alert_load_img: "请先上传角色图片。",
+        ai_loading: "AI 模块及模型加载中...",
+        ai_analyzing: "正在分析轮廓并分离背景...",
+        alert_ai_done: "✨ AI 智能抠图已完成！\n\n如有需要可用 [🎯 吸管擦除] 微调，或直接点击 [📥 保存高清透明PNG]。"
+      }
+    };
+
+    let currentLang = localStorage.getItem('touchrp_studio_lang') || 'ko';
+
+    function setLanguage(lang) {
+      if (!I18N[lang]) lang = 'ko';
+      currentLang = lang;
+      localStorage.setItem('touchrp_studio_lang', lang);
+
+      const dict = I18N[lang];
+      for (const [key, val] of Object.entries(dict)) {
+        const el = document.getElementById(key);
+        if (el) {
+          if (key.startsWith('opt_') || key.startsWith('chip_')) {
+            el.textContent = val;
+            if (key.startsWith('chip_')) {
+              el.setAttribute('data-label', val);
+            }
+          } else {
+            el.innerHTML = val;
+          }
+        }
+      }
+
+      document.querySelectorAll('.lang-btn').forEach(btn => {
+        if (btn.getAttribute('data-lang') === lang) {
+          btn.classList.add('active');
+          btn.style.background = 'var(--accent-cyan)';
+          btn.style.color = '#000';
+        } else {
+          btn.classList.remove('active');
+          btn.style.background = 'transparent';
+          btn.style.color = '#94a3b8';
+        }
+      });
+    }
+
+    document.querySelectorAll('.lang-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        setLanguage(btn.getAttribute('data-lang'));
+      });
+    });
+
+    // 초기 언어 로드 (브라우저 언어 감지)
+    const navLang = (navigator.language || navigator.userLanguage || 'ko').toLowerCase();
+    if (!localStorage.getItem('touchrp_studio_lang')) {
+      if (navLang.startsWith('ja')) currentLang = 'ja';
+      else if (navLang.startsWith('zh')) currentLang = 'zh';
+      else if (navLang.startsWith('en')) currentLang = 'en';
+      else currentLang = 'ko';
+    }
+    setLanguage(currentLang);
   </script>
 </body>
 </html>
