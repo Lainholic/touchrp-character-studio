@@ -14,7 +14,7 @@
 </p>
 
 <p align="center">
-  <img src="demo_tutorial.gif" alt="TouchRP Character Studio Demo" width="100%" style="border-radius: 10px; box-shadow: 0 4px 20px rgba(0,240,255,0.3);" />
+  <img src="demo_tutorial_v2.gif" alt="TouchRP Character Studio Demo" width="100%" style="border-radius: 10px; box-shadow: 0 4px 20px rgba(0,240,255,0.3);" />
 </p>
 
 ---
